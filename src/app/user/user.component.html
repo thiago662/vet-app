@@ -1,0 +1,179 @@
+<ul class="nav align-items-center bg-white border-bottom">
+  <li class="nav-item p-3 text-center">
+    Usuarios
+  </li>
+</ul>
+
+<div class="d-flex justify-content-between m-3">
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-outline-tertiary" (click)="reload()">
+      <i class="fas fa-sync"></i>
+    </button>
+    <button type="button" class="btn btn-tertiary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+      <i class="fas fa-filter"></i>
+    </button>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary" (click)="openCreateUserModal()">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<div class="m-3">
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+    <form [formGroup]="userFiltersForm" (ngSubmit)="onSubmitToFilter()">
+      <div class="card">
+        <div class="card-header">
+          Filtros
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="name">Nome</label>
+              <input type="text" class="form-control" id="name" formControlName="name">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="email">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="role_id">Função</label>
+              <select class="form-select" id="role_id" formControlName="role_id">
+                <!-- <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option> -->
+                <option value="1">1</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="active">Status</label>
+              <select class="form-select" id="active" formControlName="active">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-end">
+          <button type="button" class="btn btn-outline-tertiary">Limpar Filtro ([numero de filtros])</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!userForm.valid">Filtrar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card m-3">
+  <div class="card-body table-responsive p-0">
+    <table class="table table-hover m-0">
+      <thead>
+        <tr>
+          <!-- <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></th> -->
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Email</th>
+          <th scope="col">Status</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users?.data" (click)="showUser(user?.id)">
+          <!-- <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td> -->
+          <td>{{ user?.id }}</td>
+          <td>{{ user?.name }}</td>
+          <td>{{ user?.email }}</td>
+          <td><span [ngClass]="user?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ user?.active ? 'Ativo' : 'Desativo' }}</span></td>
+          <td>{{ user?.role?.title }}</td>
+          <td>
+            <button type="button" class="btn btn-outline-success btn-sm"><i class="fa-solid fa-pen"></i></button>
+            <button type="button" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div [formGroup]="userOptionsForm" class="card-footer d-flex justify-content-between align-middle">
+    <span class="align-middle">Pagina {{ users?.current_page }} de {{ users?.last_page }}</span>
+    <ngb-pagination [collectionSize]="users?.last_page * 10" [page]="userOptionsForm.controls.page.value" (pageChange)="userOptionsForm.controls.page.setValue($event)" [maxSize]="5" [boundaryLinks]="true" size="sm"></ngb-pagination>
+    <div class="col-auto">
+      <select class="form-select form-select-sm" aria-label="Default select example" id="per_page" formControlName="per_page">
+        <option *ngFor="let option of perPageOptions" [value]="option">{{ option }}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<ng-template #contentCreate let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Criar usuario</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmitToCreate()">
+    <div class="modal-body">
+
+      <div class="mb-3">
+        <label class="form-label" for="name">Nome</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="email">Email</label>
+        <input type="email" class="form-control" id="email" formControlName="email">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="password">Senha</label>
+        <input type="password" class="form-control" id="password" formControlName="password">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="active">Status</label>
+        <div class="mb-3 form-check form-switch">
+          <label class="form-label" for="active">{{ userForm.controls.active.value ? 'Ativo' : 'Inativo' }}</label>
+          <input type="checkbox" class="form-check-input" id="active" role="switch" formControlName="active">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="role_id">Função</label>
+        <select class="form-select" id="role_id" formControlName="role_id">
+          <!-- <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option> -->
+          <option value="1">1</option>
+        </select>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
+      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!userForm.valid">Salvar</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #contentEdit let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Editar usuario</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <p>Editando usuario.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Salvar</button>
+  </div>
+</ng-template>
+
+<ng-template #contentDelete let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Exclusão de usuario</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <p>Deseja mesmo excluir esse usuario?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Deletar</button>
+  </div>
+</ng-template>
