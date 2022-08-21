@@ -1,12 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { SignService } from '../sign/sign.service';
+import { SignService } from '../../sign/sign.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserModalService {
   environment = environment;
 
   constructor(
@@ -14,7 +14,7 @@ export class UserService {
     private signService: SignService,
   ) { }
 
-  getUsers(params: any = null) {
+  getUsers(options: any = null, params: any = null) {
     var authorization: any = this.signService.getToken();
 
     return this.http.get(this.environment.baseUrl + 'api/users', {
@@ -22,7 +22,7 @@ export class UserService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authorization.access_token,
       }),
-      params: params,
+      params: options,
     }).toPromise();
   }
 
@@ -48,21 +48,10 @@ export class UserService {
     }).toPromise();
   }
 
-  deleteUser(id: any) {
+  updateUser(params: any) {
     var authorization: any = this.signService.getToken();
 
-    return this.http.delete(this.environment.baseUrl + 'api/users/' + id, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + authorization.access_token,
-      }),
-    }).toPromise();
-  }
-
-  getRoleOptions() {
-    var authorization: any = this.signService.getToken();
-
-    return this.http.get(this.environment.baseUrl + 'api/roles/option', {
+    return this.http.put(this.environment.baseUrl + 'api/users/' + params.id, params, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authorization.access_token,

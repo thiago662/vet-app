@@ -1,0 +1,51 @@
+<div id="backdrop" class="modal-backdrop fade" [ngClass]="{ show: showModal }"></div>
+<div class="modal d-block fade" [ngClass]="{ show: showModal }" (click)="onClose()" id="listing-dialog" tabindex="-1" role="dialog" aria-labelledby="modalIdLabel">
+  <div class="modal-dialog" role="document" (click)="onDialogClick($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Criar usuario</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+      </div>
+      <form [formGroup]="userForm" (ngSubmit)="onSubmitToCreate()">
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label class="form-label" for="name">Nome</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" class="form-control" id="email" formControlName="email">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="password">Senha</label>
+            <input type="password" class="form-control" id="password" formControlName="password">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="active">Status</label>
+            <div class="mb-3 form-check form-switch">
+              <label class="form-label" for="active">{{ userForm.controls.active.value ? 'Ativo' : 'Inativo' }}</label>
+              <input type="checkbox" class="form-check-input" id="active" role="switch" formControlName="active">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="role_id">Função</label>
+            <select class="form-select" id="role_id" formControlName="role_id">
+              <!-- <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option> -->
+              <option value="1">1</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="onClose()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" (click)="onClose()" [disabled]="!userForm.valid">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

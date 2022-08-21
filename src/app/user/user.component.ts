@@ -12,11 +12,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserComponent implements OnInit {
   @ViewChild("contentCreate") contentCreate: any;
-  @ViewChild("contentEdit") contentEdit: any;
   @ViewChild("contentDelete") contentDelete: any;
+
   isCollapsed = true;
   perPageOptions = [10,15,20,25,30];
   users: any;
+  roles: any;
+
   userForm = new FormGroup({
     name: new FormControl(''),
     email: new FormControl(''),
@@ -44,6 +46,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsers();
+    this.getRoleOptions();
     this.userOptionsForm.valueChanges.subscribe(value => {
       this.getUsers();
     });
@@ -59,22 +62,29 @@ export class UserComponent implements OnInit {
       .catch((error: any) => {
         console.log(error);
       })
-      .finally(() => {
-      });
+      .finally(() => {});
   }
 
-  showUser(id: any) {
-    this.userService.showUser(id)
+  deleteUser(id: any) {
+    this.userService.deleteUser(id)
       .then((data: any) => {
-        console.log(data);
-        // this.userForm.reset();
-        // this.reload();
+        this.reload();
       })
       .catch((error: any) => {
         console.log(error);
       })
-      .finally(() => {
-      });
+      .finally(() => {});
+  }
+
+  getRoleOptions() {
+    this.userService.getRoleOptions()
+      .then((data: any) => {
+        this.roles = data;
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
+      .finally(() => {});
   }
 
   onSubmitToCreate(): void {
@@ -86,8 +96,7 @@ export class UserComponent implements OnInit {
       .catch((error: any) => {
         console.log(error);
       })
-      .finally(() => {
-      });
+      .finally(() => {});
   }
 
   onSubmitToFilter() {
@@ -98,12 +107,26 @@ export class UserComponent implements OnInit {
     this.modalService.open(this.contentCreate, {ariaLabelledBy: 'modal-basic-title'});
   }
 
-  openEditUserModal(user: any) {
-    this.modalService.open(this.contentEdit, {ariaLabelledBy: 'modal-basic-title'});
+  openDeleteUserModal(user: any) {
+    this.modalService.open(this.contentDelete, {ariaLabelledBy: 'modal-basic-title'})
+      .result.then(data => {
+        this.deleteUser(user.id);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
+      .finally(() => {});
   }
 
-  openDeleteUserModal(user: any) {
-    this.modalService.open(this.contentDelete, {ariaLabelledBy: 'modal-basic-title'});
+  clearFilter() {
+    this.userFiltersForm.patchValue({
+      name: '',
+      email: '',
+      role_id: '',
+      active: '',
+    });
+    this.onSubmitToFilter();
+    this.isCollapsed = true;
   }
 
   reload() {
