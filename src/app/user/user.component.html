@@ -40,8 +40,7 @@
             <div class="col-md-6">
               <label class="form-label" for="role_id">Função</label>
               <select class="form-select" id="role_id" formControlName="role_id">
-                <!-- <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option> -->
-                <option value="1">1</option>
+                <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option>
               </select>
             </div>
             <div class="col-md-6">
@@ -54,7 +53,7 @@
           </div>
         </div>
         <div class="card-footer text-end">
-          <button type="button" class="btn btn-outline-tertiary">Limpar Filtro ([numero de filtros])</button>
+          <button type="button" class="btn btn-outline-tertiary" (click)="clearFilter()">Limpar Filtro</button>
           <button type="submit" class="btn btn-primary" [disabled]="!userForm.valid">Filtrar</button>
         </div>
       </div>
@@ -67,7 +66,6 @@
     <table class="table table-hover m-0">
       <thead>
         <tr>
-          <!-- <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></th> -->
           <th scope="col">Id</th>
           <th scope="col">Nome</th>
           <th scope="col">Email</th>
@@ -77,16 +75,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users?.data" (click)="showUser(user?.id)">
-          <!-- <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td> -->
+        <tr *ngFor="let user of users?.data">
           <td>{{ user?.id }}</td>
           <td>{{ user?.name }}</td>
           <td>{{ user?.email }}</td>
           <td><span [ngClass]="user?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ user?.active ? 'Ativo' : 'Desativo' }}</span></td>
           <td>{{ user?.role?.title }}</td>
           <td>
-            <button type="button" class="btn btn-outline-success btn-sm"><i class="fa-solid fa-pen"></i></button>
-            <button type="button" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/users/' + user?.id]"><i class="fa-solid fa-pen"></i></button>
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteUserModal(user)"><i class="fa-solid fa-trash"></i></button>
           </td>
         </tr>
       </tbody>
@@ -103,6 +100,8 @@
   </div>
 </div>
 
+<router-outlet></router-outlet>
+
 <ng-template #contentCreate let-modal>
   <div class="modal-header">
     <h5 class="modal-title">Criar usuario</h5>
@@ -110,22 +109,18 @@
   </div>
   <form [formGroup]="userForm" (ngSubmit)="onSubmitToCreate()">
     <div class="modal-body">
-
       <div class="mb-3">
         <label class="form-label" for="name">Nome</label>
         <input type="text" class="form-control" id="name" formControlName="name">
       </div>
-
       <div class="mb-3">
         <label class="form-label" for="email">Email</label>
         <input type="email" class="form-control" id="email" formControlName="email">
       </div>
-
       <div class="mb-3">
         <label class="form-label" for="password">Senha</label>
         <input type="password" class="form-control" id="password" formControlName="password">
       </div>
-
       <div class="mb-3">
         <label class="form-label" for="active">Status</label>
         <div class="mb-3 form-check form-switch">
@@ -133,35 +128,18 @@
           <input type="checkbox" class="form-check-input" id="active" role="switch" formControlName="active">
         </div>
       </div>
-
       <div class="mb-3">
         <label class="form-label" for="role_id">Função</label>
         <select class="form-select" id="role_id" formControlName="role_id">
-          <!-- <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option> -->
-          <option value="1">1</option>
+          <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option>
         </select>
       </div>
-
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
       <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!userForm.valid">Salvar</button>
     </div>
   </form>
-</ng-template>
-
-<ng-template #contentEdit let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">Editar usuario</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <p>Editando usuario.</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Salvar</button>
-  </div>
 </ng-template>
 
 <ng-template #contentDelete let-modal>
@@ -173,7 +151,7 @@
     <p>Deseja mesmo excluir esse usuario?</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Deletar</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Sim</button>
   </div>
 </ng-template>

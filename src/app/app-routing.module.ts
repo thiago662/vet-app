@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SignComponent } from './sign/sign.component';
+import { UserModalComponent } from './user/user-modal/user-modal.component';
 import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
@@ -32,6 +33,9 @@ const routes: Routes = [
   {
     path: 'users',
     component: UserComponent,
+    children: [
+      { path: ':id', component: UserModalComponent },
+    ],
   },
   // {
   //   path: 'profile',
