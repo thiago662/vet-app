@@ -21,7 +21,7 @@ export class SignComponent {
     var isUserLogged = this.signService.isUserLogged();
 
     if (isUserLogged) {
-      this.router.navigate(['/users']);
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -30,7 +30,7 @@ export class SignComponent {
       .then((data: auth) => {
         console.log(data);
         this.signService.setToken(data);
-        this.router.navigate(['/users']);
+        this.router.navigate(['/dashboard']);
       })
       .catch((error: any) => {
         console.log(error);

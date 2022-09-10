@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SignService } from '../sign/sign.service';
+import { HeaderService } from './header.service';
 
 @Component({
   selector: 'app-header',
@@ -8,13 +9,19 @@ import { SignService } from '../sign/sign.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  user: any;
 
   constructor(
     private router: Router,
     private signService: SignService,
+    private headerService: HeaderService,
   ) { }
 
   ngOnInit(): void {
+    this.headerService.getProfile()
+      .then((data: any) => {
+        this.user = data;
+      })
   }
 
   logout(): void {

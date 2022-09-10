@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from './user.service';
@@ -15,17 +15,35 @@ export class UserComponent implements OnInit {
   @ViewChild("contentDelete") contentDelete: any;
 
   isCollapsed = true;
-  perPageOptions = [10,15,20,25,30];
+  perPageOptions = [5,10,15,20,25,30];
   users: any;
   roles: any;
 
+  checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+    let password = group.get('password');
+    let confirmPassword = group.get('password_confirmation');
+
+    return password?.value === confirmPassword?.value ? null : { notSame: true }
+  };
+
   userForm = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    role_id: new FormControl(''),
+    name: new FormControl('',[Validators.required]),
+    email: new FormControl('',[
+      Validators.required,
+      Validators.email,
+    ]),
+    password: new FormControl('',[
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+    password_confirmation: new FormControl('',[
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+    role_id: new FormControl('',[Validators.required]),
     active: new FormControl(true),
-  });
+  }, { validators: this.checkPasswords });
+
   userOptionsForm = new FormGroup({
     per_page: new FormControl(15),
     page: new FormControl(1),
@@ -62,7 +80,8 @@ export class UserComponent implements OnInit {
       .catch((error: any) => {
         console.log(error);
       })
-      .finally(() => {});
+      .finally(() => {
+      });
   }
 
   deleteUser(id: any) {
@@ -73,7 +92,8 @@ export class UserComponent implements OnInit {
       .catch((error: any) => {
         console.log(error);
       })
-      .finally(() => {});
+      .finally(() => {
+      });
   }
 
   getRoleOptions() {
@@ -84,19 +104,30 @@ export class UserComponent implements OnInit {
       .catch((error: any) => {
         console.log(error);
       })
-      .finally(() => {});
+      .finally(() => {
+      });
   }
 
   onSubmitToCreate(): void {
     this.userService.createUser(this.userForm.value)
       .then((data: any) => {
-        this.userForm.reset();
-        this.reload();
       })
       .catch((error: any) => {
         console.log(error);
       })
-      .finally(() => {});
+      .finally(() => {
+        this.userForm.patchValue({
+          id: '',
+          name: '',
+          email: '',
+          password: '',
+          password_confirmation: '',
+          role_id: '',
+          active: true,
+        });
+
+        this.reload();
+      });
   }
 
   onSubmitToFilter() {
@@ -115,7 +146,8 @@ export class UserComponent implements OnInit {
       .catch((error: any) => {
         console.log(error);
       })
-      .finally(() => {});
+      .finally(() => {
+      });
   }
 
   clearFilter() {

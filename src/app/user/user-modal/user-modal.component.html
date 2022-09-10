@@ -8,22 +8,22 @@
       </div>
       <form [formGroup]="userForm" (ngSubmit)="onSubmitToCreate()">
         <div class="modal-body">
-
           <div class="mb-3">
             <label class="form-label" for="name">Nome</label>
-            <input type="text" class="form-control" id="name" formControlName="name">
+            <input type="text" class="form-control" id="name" formControlName="name" required>
           </div>
-
           <div class="mb-3">
             <label class="form-label" for="email">Email</label>
-            <input type="email" class="form-control" id="email" formControlName="email">
+            <input type="email" class="form-control" id="email" formControlName="email" required>
           </div>
-
           <div class="mb-3">
             <label class="form-label" for="password">Senha</label>
             <input type="password" class="form-control" id="password" formControlName="password">
           </div>
-
+          <div class="mb-3">
+            <label class="form-label" for="password_confirmation">Confirmar Senha</label>
+            <input type="password" class="form-control" id="password_confirmation" formControlName="password_confirmation">
+          </div>
           <div class="mb-3">
             <label class="form-label" for="active">Status</label>
             <div class="mb-3 form-check form-switch">
@@ -31,15 +31,12 @@
               <input type="checkbox" class="form-check-input" id="active" role="switch" formControlName="active">
             </div>
           </div>
-
           <div class="mb-3">
             <label class="form-label" for="role_id">Função</label>
-            <select class="form-select" id="role_id" formControlName="role_id">
-              <!-- <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option> -->
-              <option value="1">1</option>
+            <select class="form-select" id="role_id" formControlName="role_id" required>
+              <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option>
             </select>
           </div>
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="onClose()">Cancelar</button>

@@ -48,10 +48,21 @@ export class UserModalService {
     }).toPromise();
   }
 
-  updateUser(params: any) {
+  updateUser(id: number, params: any) {
     var authorization: any = this.signService.getToken();
 
-    return this.http.put(this.environment.baseUrl + 'api/users/' + params.id, params, {
+    return this.http.put(this.environment.baseUrl + 'api/users/' + id, params, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authorization.access_token,
+      }),
+    }).toPromise();
+  }
+
+  getRoleOptions() {
+    var authorization: any = this.signService.getToken();
+
+    return this.http.get(this.environment.baseUrl + 'api/roles/option', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authorization.access_token,

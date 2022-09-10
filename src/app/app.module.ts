@@ -14,6 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { ProfileComponent } from './profile/profile.component';
 import { UserComponent } from './user/user.component';
 import { UserModalComponent } from './user/user-modal/user-modal.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 // import { DashboardComponent } from './dashboard/dashboard.component';
 // import { LeadComponent } from './lead/lead.component';
 // import { TrashComponent } from './trash/trash.component';
@@ -31,6 +32,7 @@ import { UserModalComponent } from './user/user-modal/user-modal.component';
     HeaderComponent,
     UserComponent,
     UserModalComponent,
+    DashboardComponent,
     // DashboardComponent,
     // LeadComponent,
     // TrashComponent,

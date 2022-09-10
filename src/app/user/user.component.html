@@ -6,15 +6,15 @@
 
 <div class="d-flex justify-content-between m-3">
   <div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-outline-tertiary" (click)="reload()">
+    <button type="button" class="btn btn-outline-tertiary" (click)="reload()" ngbTooltip="Recarregar listagem">
       <i class="fas fa-sync"></i>
     </button>
-    <button type="button" class="btn btn-tertiary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+    <button type="button" class="btn btn-tertiary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
       <i class="fas fa-filter"></i>
     </button>
   </div>
   <div>
-    <button type="button" class="btn btn-primary" (click)="openCreateUserModal()">
+    <button type="button" class="btn btn-primary" (click)="openCreateUserModal()" ngbTooltip="Adicionar usuario">
       <i class="fas fa-plus"></i>
     </button>
   </div>
@@ -82,8 +82,8 @@
           <td><span [ngClass]="user?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ user?.active ? 'Ativo' : 'Desativo' }}</span></td>
           <td>{{ user?.role?.title }}</td>
           <td>
-            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/users/' + user?.id]"><i class="fa-solid fa-pen"></i></button>
-            <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteUserModal(user)"><i class="fa-solid fa-trash"></i></button>
+            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/users/' + user?.id]" ngbTooltip="Editar usuario"><i class="fa-solid fa-pen"></i></button>
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteUserModal(user)" ngbTooltip="Excluir usuario"><i class="fa-solid fa-trash"></i></button>
           </td>
         </tr>
       </tbody>
@@ -111,15 +111,19 @@
     <div class="modal-body">
       <div class="mb-3">
         <label class="form-label" for="name">Nome</label>
-        <input type="text" class="form-control" id="name" formControlName="name">
+        <input type="text" class="form-control" id="name" formControlName="name" required>
       </div>
       <div class="mb-3">
         <label class="form-label" for="email">Email</label>
-        <input type="email" class="form-control" id="email" formControlName="email">
+        <input type="email" class="form-control" id="email" formControlName="email" required>
       </div>
       <div class="mb-3">
         <label class="form-label" for="password">Senha</label>
-        <input type="password" class="form-control" id="password" formControlName="password">
+        <input type="password" class="form-control" id="password" formControlName="password" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="password_confirmation">Confirmar Senha</label>
+        <input type="password" class="form-control" id="password_confirmation" formControlName="password_confirmation" required>
       </div>
       <div class="mb-3">
         <label class="form-label" for="active">Status</label>
@@ -130,7 +134,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label" for="role_id">Função</label>
-        <select class="form-select" id="role_id" formControlName="role_id">
+        <select class="form-select" id="role_id" formControlName="role_id" required>
           <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option>
         </select>
       </div>
