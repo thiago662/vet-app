@@ -1,0 +1,104 @@
+<ul class="nav align-items-center bg-white border-bottom">
+  <li class="nav-item p-3 text-center">
+    <a [routerLink]="['/owners']">Donos</a> / {{ owner?.id }}
+  </li>
+</ul>
+
+<!-- {{ owner | json }} -->
+
+<div class="row m-0">
+  <div class="col-md-8">
+    <div class="card m-1 mt-3">
+      <div class="row">
+        <div class="col-md-2 text-center">
+          <span class="fa-stack fa-lg fs-1">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa-solid fa-user fa-stack-1x fa-inverse"></i>
+          </span>
+        </div>
+        <div class="col-md-10">
+          <strong>Id:</strong> {{ owner?.id }}<br>
+          <strong>Nome:</strong> {{ owner?.name }}<br>
+          <strong>Email:</strong> {{ owner?.email }}<br>
+          <strong>CPF:</strong> {{ owner?.person_id }}<br>
+          <strong>Telefone:</strong> {{ owner?.phone_number }}<br>
+          <strong>Celular:</strong> {{ owner?.cell_phone_number }}<br>
+          <strong>Cep:</strong> {{ owner?.zip_code }}<br>
+          <strong>Estado:</strong> {{ owner?.state }}<br>
+          <strong>Cidade:</strong> {{ owner?.city }}<br>
+          <strong>Bairro:</strong> {{ owner?.neighborhood }}<br>
+          <strong>Rua:</strong> {{ owner?.street }}<br>
+          <strong>Numero:</strong> {{ owner?.house_number }}<br>
+          <strong>Referencia:</strong> {{ owner?.address_reference }}<br>
+          <strong>Idade:</strong> {{ owner?.birth_date }}<br>
+          <strong>Status:</strong> {{ owner?.active }}<br>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card m-1 mt-3">
+      <div class="list-group list-group-flush">
+        <div class="card-header">
+          Animais
+        </div>
+        <div *ngFor="let animal of owner?.animals" type="button" [routerLink]="['/animals/' + animal?.id]" class="list-group-item">
+          <strong>Id:</strong> {{ animal?.id }}<br>
+          <strong>Nome:</strong> {{ animal?.name }}<br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- {{ owner?.interections | json }} -->
+
+<div class="row m-0">
+  <div class="col-md-8">
+    <div class="card m-1 mt-3">
+      <div class="list-group list-group-flush">
+        <div class="card-header">
+          Historico
+        </div>
+        <div *ngFor="let interection of owner?.interections" class="list-group-item">
+          {{ interection | json }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card m-1 mt-3">
+      <div class="list-group list-group-flush">
+        <div class="card-header">
+          Ações
+        </div>
+        <div class="list-group-item" type="button" (click)="openCreateMessageModal()">
+          Mensagem
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #contentCreateMessage let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Criar mensagem</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="messageForm" (ngSubmit)="onSubmitToCreateMessage()">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="form-label" for="title">title</label>
+        <input type="text" class="form-control" id="title" formControlName="title" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="message">message</label>
+        <input type="text" class="form-control" id="message" formControlName="message">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
+      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!messageForm.valid">Salvar</button>
+    </div>
+  </form>
+</ng-template>

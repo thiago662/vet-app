@@ -1,6 +1,6 @@
 <ul class="nav align-items-center bg-white border-bottom">
   <li class="nav-item p-3 text-center">
-    Usuarios
+    Interação
   </li>
 </ul>
 
@@ -14,7 +14,7 @@
     </button>
   </div>
   <div>
-    <button type="button" class="btn btn-primary" (click)="openCreateUserModal()" ngbTooltip="Adicionar usuario">
+    <button type="button" class="btn btn-primary" (click)="openCreateInterectionModal()" ngbTooltip="Adicionar usuario">
       <i class="fas fa-plus"></i>
     </button>
   </div>
@@ -22,7 +22,7 @@
 
 <div class="m-3">
   <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
-    <form [formGroup]="userFiltersForm" (ngSubmit)="onSubmitToFilter()">
+    <form [formGroup]="interectionFiltersForm" (ngSubmit)="onSubmitToFilter()">
       <div class="card">
         <div class="card-header">
           Filtros
@@ -38,12 +38,6 @@
               <input type="email" class="form-control" id="email" formControlName="email">
             </div>
             <div class="col-md-6">
-              <label class="form-label" for="role_id">Função</label>
-              <select class="form-select" id="role_id" formControlName="role_id">
-                <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option>
-              </select>
-            </div>
-            <div class="col-md-6">
               <label class="form-label" for="active">Status</label>
               <select class="form-select" id="active" formControlName="active">
                 <option value="true">Ativo</option>
@@ -54,7 +48,7 @@
         </div>
         <div class="card-footer text-end">
           <button type="button" class="btn btn-outline-tertiary" (click)="clearFilter()">Limpar Filtro</button>
-          <button type="submit" class="btn btn-primary" [disabled]="!userFiltersForm.valid">Filtrar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!interectionFiltersForm.valid">Filtrar</button>
         </div>
       </div>
     </form>
@@ -70,28 +64,26 @@
           <th scope="col">Nome</th>
           <th scope="col">Email</th>
           <th scope="col">Status</th>
-          <th scope="col">Tipo</th>
           <th scope="col">Ação</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users?.data">
-          <td>{{ user?.id }}</td>
-          <td>{{ user?.name }}</td>
-          <td>{{ user?.email }}</td>
-          <td><span [ngClass]="user?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ user?.active ? 'Ativo' : 'Desativo' }}</span></td>
-          <td>{{ user?.role?.title }}</td>
+        <tr *ngFor="let interection of interections?.data">
+          <td>{{ interection?.id }}</td>
+          <td>{{ interection?.name }}</td>
+          <td>{{ interection?.email }}</td>
+          <td><span [ngClass]="interection?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ interection?.active ? 'Ativo' : 'Desativo' }}</span></td>
           <td>
-            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/users/' + user?.id]" ngbTooltip="Editar usuario"><i class="fa-solid fa-pen"></i></button>
-            <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteUserModal(user)" ngbTooltip="Excluir usuario"><i class="fa-solid fa-trash"></i></button>
+            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/interections/' + interection?.id]" ngbTooltip="Editar usuario"><i class="fa-solid fa-pen"></i></button>
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteInterectionModal(interection)" ngbTooltip="Excluir usuario"><i class="fa-solid fa-trash"></i></button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div [formGroup]="userOptionsForm" class="card-footer d-flex justify-content-between align-middle">
-    <span class="align-middle">Pagina {{ users?.current_page }} de {{ users?.last_page }}</span>
-    <ngb-pagination [collectionSize]="users?.last_page * 10" [page]="userOptionsForm.controls.page.value" (pageChange)="userOptionsForm.controls.page.setValue($event)" [maxSize]="5" [boundaryLinks]="true" size="sm"></ngb-pagination>
+  <div [formGroup]="interectionOptionsForm" class="card-footer d-flex justify-content-between align-middle">
+    <span class="align-middle">Pagina {{ interections?.current_page }} de {{ interections?.last_page }}</span>
+    <ngb-pagination [collectionSize]="interections?.last_page * 10" [page]="interectionOptionsForm.controls.page.value" (pageChange)="interectionOptionsForm.controls.page.setValue($event)" [maxSize]="5" [boundaryLinks]="true" size="sm"></ngb-pagination>
     <div class="col-auto">
       <select class="form-select form-select-sm" aria-label="Default select example" id="per_page" formControlName="per_page">
         <option *ngFor="let option of perPageOptions" [value]="option">{{ option }}</option>
@@ -107,7 +99,7 @@
     <h5 class="modal-title">Criar usuario</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
-  <form [formGroup]="userForm" (ngSubmit)="onSubmitToCreate()">
+  <form [formGroup]="interectionForm" (ngSubmit)="onSubmitToCreate()">
     <div class="modal-body">
       <div class="mb-3">
         <label class="form-label" for="name">Nome</label>
@@ -128,20 +120,14 @@
       <div class="mb-3">
         <label class="form-label" for="active">Status</label>
         <div class="mb-3 form-check form-switch">
-          <label class="form-label" for="active">{{ userForm.controls.active.value ? 'Ativo' : 'Inativo' }}</label>
+          <label class="form-label" for="active">{{ interectionForm.controls.active.value ? 'Ativo' : 'Inativo' }}</label>
           <input type="checkbox" class="form-check-input" id="active" role="switch" formControlName="active">
         </div>
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="role_id">Função</label>
-        <select class="form-select" id="role_id" formControlName="role_id" required>
-          <option *ngFor="let role of roles" value="{{ role.id }}">{{ role.title }}</option>
-        </select>
       </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!userForm.valid">Salvar</button>
+      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!interectionForm.valid">Salvar</button>
     </div>
   </form>
 </ng-template>

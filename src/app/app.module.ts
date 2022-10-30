@@ -14,7 +14,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { ProfileComponent } from './profile/profile.component';
 import { UserComponent } from './user/user.component';
 import { UserModalComponent } from './user/user-modal/user-modal.component';
+import { OwnerComponent } from './owner/owner.component';
+import { AnimalComponent } from './animal/animal.component';
+import { InterectionComponent } from './interection/interection.component';
+import { InterectionModalComponent } from './interection/interection-modal/interection-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { OwnerViewComponent } from './owner/owner-view/owner-view.component';
+import { AnimalViewComponent } from './animal/animal-view/animal-view.component';
 // import { DashboardComponent } from './dashboard/dashboard.component';
 // import { LeadComponent } from './lead/lead.component';
 // import { TrashComponent } from './trash/trash.component';
@@ -32,7 +38,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HeaderComponent,
     UserComponent,
     UserModalComponent,
+    OwnerComponent,
+    AnimalComponent,
+    InterectionComponent,
+    InterectionModalComponent,
     DashboardComponent,
+    OwnerViewComponent,
+    AnimalViewComponent,
     // DashboardComponent,
     // LeadComponent,
     // TrashComponent,

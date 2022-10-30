@@ -1,0 +1,254 @@
+<ul class="nav align-items-center bg-white border-bottom">
+  <li class="nav-item p-3 text-center">
+    Donos
+  </li>
+</ul>
+
+<div class="d-flex justify-content-between m-3">
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-outline-tertiary" (click)="reload()" ngbTooltip="Recarregar listagem">
+      <i class="fas fa-sync"></i>
+    </button>
+    <button type="button" class="btn btn-tertiary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
+      <i class="fas fa-filter"></i>
+    </button>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary" (click)="openCreateOwnerModal()" ngbTooltip="Adicionar dono">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<div class="m-3">
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+    <form [formGroup]="ownerFiltersForm" (ngSubmit)="onSubmitToFilter()">
+      <div class="card">
+        <div class="card-header">
+          Filtros
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label" for="name">Nome</label>
+              <input type="text" class="form-control" id="name" formControlName="name">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="email">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="person_id">CPF</label>
+              <input type="text" class="form-control" id="person_id" formControlName="person_id">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="phone_number">Telefone</label>
+              <input type="text" class="form-control" id="phone_number" formControlName="phone_number">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="cell_phone_number">Celular</label>
+              <input type="text" class="form-control" id="cell_phone_number" formControlName="cell_phone_number">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="zip_code">CEP</label>
+              <input type="text" class="form-control" id="zip_code" formControlName="zip_code">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="state">Estado</label>
+              <input type="text" class="form-control" id="state" formControlName="state">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="city">Cidade</label>
+              <input type="text" class="form-control" id="city" formControlName="city">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="neighborhood">Bairro</label>
+              <input type="text" class="form-control" id="neighborhood" formControlName="neighborhood">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="street">Rua</label>
+              <input type="text" class="form-control" id="street" formControlName="street">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="house_number">Numero</label>
+              <input type="text" class="form-control" id="house_number" formControlName="house_number">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="address_reference">Referencia</label>
+              <input type="text" class="form-control" id="address_reference" formControlName="address_reference">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="birth_date">Data de nascimento</label>
+              <input type="date" class="form-control" id="birth_date" formControlName="birth_date">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="active">Status</label>
+              <select class="form-select" id="active" formControlName="active">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-end">
+          <button type="button" class="btn btn-outline-tertiary" (click)="clearFilter()">Limpar Filtro</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!ownerFiltersForm.valid">Filtrar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card m-3">
+  <div class="card-body table-responsive p-0">
+    <table class="table table-hover m-0">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Email</th>
+          <th scope="col">CPF</th>
+          <th scope="col">Celular</th>
+          <th scope="col">Status</th>
+          <th scope="col">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let owner of owners?.data">
+          <td>{{ owner?.id }}</td>
+          <td>{{ owner?.name }}</td>
+          <td>{{ owner?.email }}</td>
+          <td>{{ owner?.person_id }}</td>
+          <td>{{ owner?.cell_phone_number }}</td>
+          <td><span [ngClass]="owner?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ owner?.active ? 'Ativo' : 'Desativo' }}</span></td>
+          <td>
+            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/owners/' + owner?.id]" ngbTooltip="Visualizar dono"><i class="fa-solid fa-eye"></i></button>
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteOwnerModal(owner)" ngbTooltip="Excluir dono"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div [formGroup]="ownerOptionsForm" class="card-footer d-flex justify-content-between align-middle">
+    <span class="align-middle">Pagina {{ owners?.current_page }} de {{ owners?.last_page }}</span>
+    <ngb-pagination [collectionSize]="owners?.last_page * 10" [page]="ownerOptionsForm.controls.page.value" (pageChange)="ownerOptionsForm.controls.page.setValue($event)" [maxSize]="5" [boundaryLinks]="true" size="sm"></ngb-pagination>
+    <div class="col-auto">
+      <select class="form-select form-select-sm" aria-label="Default select example" id="per_page" formControlName="per_page">
+        <option *ngFor="let option of perPageOptions" [value]="option">{{ option }}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
+
+<ng-template #contentCreate let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Criar animais</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="ownerForm" (ngSubmit)="onSubmitToCreate()">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="form-label" for="name">Nome</label>
+        <input type="text" class="form-control" id="name" formControlName="name" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="email">Email</label>
+        <input type="email" class="form-control" id="email" formControlName="email">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="person_id">CPF</label>
+        <input type="text" class="form-control" id="person_id" formControlName="person_id">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="phone_number">Telefone</label>
+        <input type="text" class="form-control" id="phone_number" formControlName="phone_number">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="cell_phone_number">Celular</label>
+        <input type="text" class="form-control" id="cell_phone_number" formControlName="cell_phone_number">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="zip_code">CEP</label>
+        <input type="text" class="form-control" id="zip_code" formControlName="zip_code">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="state">Estado</label>
+        <input type="text" class="form-control" id="state" formControlName="state">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="city">Cidade</label>
+        <input type="text" class="form-control" id="city" formControlName="city">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="neighborhood">Bairro</label>
+        <input type="text" class="form-control" id="neighborhood" formControlName="neighborhood">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="street">Rua</label>
+        <input type="text" class="form-control" id="street" formControlName="street">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="house_number">Numero</label>
+        <input type="text" class="form-control" id="house_number" formControlName="house_number">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="address_reference">Referencia</label>
+        <input type="text" class="form-control" id="address_reference" formControlName="address_reference">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="birth_date">Data de nascimento</label>
+        <input type="date" class="form-control" id="birth_date" formControlName="birth_date">
+      </div>
+      <div class="row mb-3" formArrayName="animals">
+        <label class="form-label" for="birth_date">Data de nascimento</label>
+        <div class="col-10">
+          <div class="row" *ngFor="let animalForm of animalForms.controls; let i = index" [formGroupName]="i">
+            <div class="col-10">
+              <select class="form-select" aria-label="Default select example" formControlName="animal_id">
+                <option *ngFor="let animal of animals" value="{{ animal.id }}">{{ animal.name }}</option>
+              </select>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-danger" ngbTooltip="Excluir dono" (click)="removeAnimal(i)">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <button type="button" class="btn btn-primary" ngbTooltip="Adicionar dono" (click)="addAnimal()">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="active">Status</label>
+        <div class="mb-3 form-check form-switch">
+          <label class="form-label" for="active">{{ ownerForm.controls.active.value ? 'Ativo' : 'Inativo' }}</label>
+          <input type="checkbox" class="form-check-input" id="active" role="switch" formControlName="active">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
+      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!ownerForm.valid">Salvar</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #contentDelete let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Exclusão de dono</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <p>Deseja mesmo excluir esse dono?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Sim</button>
+  </div>
+</ng-template>

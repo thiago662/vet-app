@@ -43,7 +43,6 @@ export class UserComponent implements OnInit {
     role_id: new FormControl('',[Validators.required]),
     active: new FormControl(true),
   }, { validators: this.checkPasswords });
-
   userOptionsForm = new FormGroup({
     per_page: new FormControl(15),
     page: new FormControl(1),
