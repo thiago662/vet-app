@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,7 @@ import { InterectionModalComponent } from './interection/interection-modal/inter
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { OwnerViewComponent } from './owner/owner-view/owner-view.component';
 import { AnimalViewComponent } from './animal/animal-view/animal-view.component';
+import { ToastComponent } from './toast/toast.component';
 // import { DashboardComponent } from './dashboard/dashboard.component';
 // import { LeadComponent } from './lead/lead.component';
 // import { TrashComponent } from './trash/trash.component';
@@ -45,6 +47,7 @@ import { AnimalViewComponent } from './animal/animal-view/animal-view.component'
     DashboardComponent,
     OwnerViewComponent,
     AnimalViewComponent,
+    ToastComponent,
     // DashboardComponent,
     // LeadComponent,
     // TrashComponent,
@@ -60,6 +63,7 @@ import { AnimalViewComponent } from './animal/animal-view/animal-view.component'
     RouterModule,
     ReactiveFormsModule,
     NgbModule,
+    AngularEditorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

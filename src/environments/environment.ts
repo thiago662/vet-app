@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   baseUrl: 'http://localhost:8000/',
   clientId: '2',
-  clientSecret: 'IjxSIt2qKqSAJi987s78lYRUAC2VJRjj1h4yrsyu',
+  clientSecret: 'uOksw4ihSJeovj8FguuViFaBXCxANUEdeq8IJLHX',
   grantType: 'password',
 };
 

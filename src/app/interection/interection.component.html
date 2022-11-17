@@ -6,15 +6,15 @@
 
 <div class="d-flex justify-content-between m-3">
   <div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-outline-tertiary" (click)="reload()" ngbTooltip="Recarregar listagem">
+    <button type="button" class="btn btn-outline-secondary" (click)="reload()" ngbTooltip="Recarregar listagem">
       <i class="fas fa-sync"></i>
     </button>
-    <button type="button" class="btn btn-tertiary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
+    <button type="button" class="btn btn-secondary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
       <i class="fas fa-filter"></i>
     </button>
   </div>
   <div>
-    <button type="button" class="btn btn-primary" (click)="openCreateInterectionModal()" ngbTooltip="Adicionar usuario">
+    <button type="button" class="btn btn-success" (click)="openCreateInterectionModal()" ngbTooltip="Adicionar usuario">
       <i class="fas fa-plus"></i>
     </button>
   </div>
@@ -47,7 +47,7 @@
           </div>
         </div>
         <div class="card-footer text-end">
-          <button type="button" class="btn btn-outline-tertiary" (click)="clearFilter()">Limpar Filtro</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="clearFilter()">Limpar Filtro</button>
           <button type="submit" class="btn btn-primary" [disabled]="!interectionFiltersForm.valid">Filtrar</button>
         </div>
       </div>
@@ -72,7 +72,7 @@
           <td>{{ interection?.id }}</td>
           <td>{{ interection?.name }}</td>
           <td>{{ interection?.email }}</td>
-          <td><span [ngClass]="interection?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ interection?.active ? 'Ativo' : 'Desativo' }}</span></td>
+          <td><span [ngClass]="interection?.active ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ interection?.active ? 'Ativo' : 'Desativo' }}</span></td>
           <td>
             <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/interections/' + interection?.id]" ngbTooltip="Editar usuario"><i class="fa-solid fa-pen"></i></button>
             <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteInterectionModal(interection)" ngbTooltip="Excluir usuario"><i class="fa-solid fa-trash"></i></button>

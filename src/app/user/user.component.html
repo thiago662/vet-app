@@ -6,15 +6,15 @@
 
 <div class="d-flex justify-content-between m-3">
   <div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-outline-tertiary" (click)="reload()" ngbTooltip="Recarregar listagem">
+    <button type="button" class="btn btn-outline-secondary" (click)="reload()" ngbTooltip="Recarregar listagem">
       <i class="fas fa-sync"></i>
     </button>
-    <button type="button" class="btn btn-tertiary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
+    <button type="button" class="btn btn-secondary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
       <i class="fas fa-filter"></i>
     </button>
   </div>
   <div>
-    <button type="button" class="btn btn-primary" (click)="openCreateUserModal()" ngbTooltip="Adicionar usuario">
+    <button type="button" class="btn btn-success" (click)="openCreateUserModal()" ngbTooltip="Adicionar usuario">
       <i class="fas fa-plus"></i>
     </button>
   </div>
@@ -53,7 +53,7 @@
           </div>
         </div>
         <div class="card-footer text-end">
-          <button type="button" class="btn btn-outline-tertiary" (click)="clearFilter()">Limpar Filtro</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="clearFilter()">Limpar Filtro</button>
           <button type="submit" class="btn btn-primary" [disabled]="!userFiltersForm.valid">Filtrar</button>
         </div>
       </div>
@@ -79,7 +79,7 @@
           <td>{{ user?.id }}</td>
           <td>{{ user?.name }}</td>
           <td>{{ user?.email }}</td>
-          <td><span [ngClass]="user?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ user?.active ? 'Ativo' : 'Desativo' }}</span></td>
+          <td><span [ngClass]="user?.active ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ user?.active ? 'Ativo' : 'Desativo' }}</span></td>
           <td>{{ user?.role?.title }}</td>
           <td>
             <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/users/' + user?.id]" ngbTooltip="Editar usuario"><i class="fa-solid fa-pen"></i></button>
@@ -141,7 +141,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!userForm.valid">Salvar</button>
+      <button type="submit" class="btn btn-success" (click)="modal.close('Save click')" [disabled]="!userForm.valid">Salvar</button>
     </div>
   </form>
 </ng-template>
@@ -156,6 +156,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
-    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Sim</button>
+    <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Sim</button>
   </div>
 </ng-template>

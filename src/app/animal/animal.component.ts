@@ -22,6 +22,7 @@ export class AnimalComponent implements OnInit {
     name: new FormControl('',[Validators.required]),
     species: new FormControl('',[Validators.required]),
     breed: new FormControl('',[Validators.required]),
+    sex: new FormControl('',[Validators.required]),
     birth_date: new FormControl('',[Validators.required]),
     active: new FormControl(true),
     owners: new FormArray([
@@ -121,6 +122,7 @@ export class AnimalComponent implements OnInit {
           name: '',
           species: '',
           breed: '',
+          sex: '',
           birth_date: '',
           active: true,
         });
@@ -156,6 +158,7 @@ export class AnimalComponent implements OnInit {
       name: '',
       species: '',
       breed: '',
+      sex: '',
       active: '',
     });
     this.onSubmitToFilter();

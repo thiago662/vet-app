@@ -6,15 +6,15 @@
 
 <div class="d-flex justify-content-between m-3">
   <div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-outline-tertiary" (click)="reload()" ngbTooltip="Recarregar listagem">
+    <button type="button" class="btn btn-outline-secondary" (click)="reload()" ngbTooltip="Recarregar listagem">
       <i class="fas fa-sync"></i>
     </button>
-    <button type="button" class="btn btn-tertiary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
+    <button type="button" class="btn btn-secondary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
       <i class="fas fa-filter"></i>
     </button>
   </div>
   <div>
-    <button type="button" class="btn btn-primary" (click)="openCreateAnimalModal()" ngbTooltip="Adicionar animal">
+    <button type="button" class="btn btn-success" (click)="openCreateAnimalModal()" ngbTooltip="Adicionar animal">
       <i class="fas fa-plus"></i>
     </button>
   </div>
@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="card-footer text-end">
-          <button type="button" class="btn btn-outline-tertiary" (click)="clearFilter()">Limpar Filtro</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="clearFilter()">Limpar Filtro</button>
           <button type="submit" class="btn btn-primary" [disabled]="!animalFiltersForm.valid">Filtrar</button>
         </div>
       </div>
@@ -80,7 +80,7 @@
           <td>{{ animal?.species }}</td>
           <td>{{ animal?.breed }}</td>
           <td>{{ animal?.birth_date }}</td>
-          <td><span [ngClass]="animal?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ animal?.active ? 'Ativo' : 'Desativo' }}</span></td>
+          <td><span [ngClass]="animal?.active ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ animal?.active ? 'Ativo' : 'Desativo' }}</span></td>
           <td>
             <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/animals/' + animal?.id]" ngbTooltip="Visulizar animal"><i class="fa-solid fa-eye"></i></button>
             <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteAnimalModal(animal)" ngbTooltip="Excluir animal"><i class="fa-solid fa-trash"></i></button>
@@ -122,6 +122,13 @@
         <input type="text" class="form-control" id="breed" formControlName="breed" required>
       </div>
       <div class="mb-3">
+        <label class="form-label" for="sex">Sexo</label>
+        <select class="form-select" aria-label="Default select example" formControlName="sex">
+          <option value="macho">Macho</option>
+          <option value="fame">Femea</option>
+        </select>
+      </div>
+      <div class="mb-3">
         <label class="form-label" for="birth_date">Data de nascimento</label>
         <input type="date" class="form-control" id="birth_date" formControlName="birth_date" required>
       </div>
@@ -143,7 +150,7 @@
           </div>
         </div>
         <div class="col-2">
-          <button type="button" class="btn btn-primary" ngbTooltip="Adicionar dono" (click)="addOwner()">
+          <button type="button" class="btn btn-success" ngbTooltip="Adicionar dono" (click)="addOwner()">
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -159,7 +166,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!animalForm.valid">Salvar</button>
+      <button type="submit" class="btn btn-success" (click)="modal.close('Save click')" [disabled]="!animalForm.valid">Salvar</button>
     </div>
   </form>
 </ng-template>
@@ -174,6 +181,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
-    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Sim</button>
+    <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Sim</button>
   </div>
 </ng-template>

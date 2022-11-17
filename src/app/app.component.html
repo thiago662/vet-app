@@ -1,27 +1,4 @@
-<!-- <app-header *ngIf="isUserLogged"></app-header>
-<div class="d-flex flex-nowrap">
-<div class="d-flex">
-  <app-nav *ngIf="isUserLogged"></app-nav>
-  <div class="bg-dark position-fixed">
-    <app-nav *ngIf="isUserLogged"></app-nav>
-  </div>
-  <div class="container-fluid">
-    <router-outlet></router-outlet>
-  </div>
-</div>
-<app-loading></app-loading> -->
-
-<!-- <app-header *ngIf="isUserLogged"></app-header>
-<div class="d-flex">
-  <app-nav *ngIf="isUserLogged" class="position-fixed"></app-nav>
-  <app-nav *ngIf="isUserLogged"></app-nav>
-  <div class="container-fluid">
-    <router-outlet></router-outlet>
-  </div>
-</div> -->
-<!--
-<app-header *ngIf="isUserLogged"></app-header> -->
-<div class="d-flex">
+<div class="d-flex" style="min-height: 100vh;">
   <app-nav *ngIf="isUserLogged" class="bg-light"></app-nav>
   <div class="container-fluid p-0">
     <app-header *ngIf="isUserLogged"></app-header>

@@ -6,15 +6,15 @@
 
 <div class="d-flex justify-content-between m-3">
   <div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-outline-tertiary" (click)="reload()" ngbTooltip="Recarregar listagem">
+    <button type="button" class="btn btn-outline-secondary" (click)="reload()" ngbTooltip="Recarregar listagem">
       <i class="fas fa-sync"></i>
     </button>
-    <button type="button" class="btn btn-tertiary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
+    <button type="button" class="btn btn-secondary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" ngbTooltip="Abrir filtro">
       <i class="fas fa-filter"></i>
     </button>
   </div>
   <div>
-    <button type="button" class="btn btn-primary" (click)="openCreateOwnerModal()" ngbTooltip="Adicionar dono">
+    <button type="button" class="btn btn-success" (click)="openCreateOwnerModal()" ngbTooltip="Adicionar dono">
       <i class="fas fa-plus"></i>
     </button>
   </div>
@@ -92,7 +92,7 @@
           </div>
         </div>
         <div class="card-footer text-end">
-          <button type="button" class="btn btn-outline-tertiary" (click)="clearFilter()">Limpar Filtro</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="clearFilter()">Limpar Filtro</button>
           <button type="submit" class="btn btn-primary" [disabled]="!ownerFiltersForm.valid">Filtrar</button>
         </div>
       </div>
@@ -121,7 +121,7 @@
           <td>{{ owner?.email }}</td>
           <td>{{ owner?.person_id }}</td>
           <td>{{ owner?.cell_phone_number }}</td>
-          <td><span [ngClass]="owner?.active ? 'badge text-bg-primary' : 'badge text-bg-danger'">{{ owner?.active ? 'Ativo' : 'Desativo' }}</span></td>
+          <td><span [ngClass]="owner?.active ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ owner?.active ? 'Ativo' : 'Desativo' }}</span></td>
           <td>
             <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/owners/' + owner?.id]" ngbTooltip="Visualizar dono"><i class="fa-solid fa-eye"></i></button>
             <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteOwnerModal(owner)" ngbTooltip="Excluir dono"><i class="fa-solid fa-trash"></i></button>
@@ -219,7 +219,7 @@
           </div>
         </div>
         <div class="col-2">
-          <button type="button" class="btn btn-primary" ngbTooltip="Adicionar dono" (click)="addAnimal()">
+          <button type="button" class="btn btn-success" ngbTooltip="Adicionar dono" (click)="addAnimal()">
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -234,7 +234,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!ownerForm.valid">Salvar</button>
+      <button type="submit" class="btn btn-success" (click)="modal.close('Save click')" [disabled]="!ownerForm.valid">Salvar</button>
     </div>
   </form>
 </ng-template>
@@ -249,6 +249,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
-    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Sim</button>
+    <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Sim</button>
   </div>
 </ng-template>

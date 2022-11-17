@@ -102,7 +102,51 @@ export class AnimalViewService {
     }).toPromise();
   }
 
-  showOwnersOptions() {
+  createSchedule(params: any) {
+    var authorization: any = this.signService.getToken();
+
+    return this.http.post(this.environment.baseUrl + 'api/schedules', params, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authorization.access_token,
+      }),
+    }).toPromise();
+  }
+
+  updateSchedule(id: number, params: any) {
+    var authorization: any = this.signService.getToken();
+
+    return this.http.put(this.environment.baseUrl + 'api/schedules/' + id, params, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authorization.access_token,
+      }),
+    }).toPromise();
+  }
+
+  deleteSchedule(id: any) {
+    var authorization: any = this.signService.getToken();
+
+    return this.http.delete(this.environment.baseUrl + 'api/schedules/' + id, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authorization.access_token,
+      }),
+    }).toPromise();
+  }
+
+  showSchedule(id: any) {
+    var authorization: any = this.signService.getToken();
+
+    return this.http.get(this.environment.baseUrl + 'api/schedules/' + id, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authorization.access_token,
+      }),
+    }).toPromise();
+  }
+
+  showOwnersOptions(params: any = null) {
     var authorization: any = this.signService.getToken();
 
     return this.http.get(this.environment.baseUrl + 'api/owners/option', {
@@ -110,6 +154,19 @@ export class AnimalViewService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authorization.access_token,
       }),
+      params: params,
+    }).toPromise();
+  }
+
+  showUsersOptions(params: any = null) {
+    var authorization: any = this.signService.getToken();
+
+    return this.http.get(this.environment.baseUrl + 'api/users/option', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authorization.access_token,
+      }),
+      params: params,
     }).toPromise();
   }
 }

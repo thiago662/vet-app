@@ -8,7 +8,7 @@
 
 <div class="row m-0">
   <div class="col-md-8">
-    <div class="card m-1 mt-3">
+    <div class="card m-1 mt-3 p-3">
       <div class="row">
         <div class="col-md-2 text-center">
           <span class="fa-stack fa-lg fs-1">
@@ -16,25 +16,17 @@
             <i class="fa-solid fa-user fa-stack-1x fa-inverse"></i>
           </span>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
           <strong>Id:</strong> {{ animal?.id }}<br>
           <strong>Nome:</strong> {{ animal?.name }}<br>
-          <!-- <strong>Email:</strong> {{ animal?.email }}<br> -->
-          <!-- <strong>CPF:</strong> {{ animal?.person_id }}<br> -->
-          <!-- <strong>Telefone:</strong> {{ animal?.phone_number }}<br> -->
-          <!-- <strong>Celular:</strong> {{ animal?.cell_phone_number }}<br> -->
-          <!-- <strong>Cep:</strong> {{ animal?.zip_code }}<br> -->
-          <!-- <strong>Estado:</strong> {{ animal?.state }}<br> -->
-          <!-- <strong>Cidade:</strong> {{ animal?.city }}<br> -->
-          <!-- <strong>Bairro:</strong> {{ animal?.neighborhood }}<br> -->
-          <!-- <strong>Rua:</strong> {{ animal?.street }}<br> -->
-          <!-- <strong>Numero:</strong> {{ animal?.house_number }}<br> -->
-          <!-- <strong>Referencia:</strong> {{ animal?.address_reference }}<br> -->
-          <!-- <strong>Idade:</strong> {{ animal?.birth_date }}<br> -->
-          <!-- <strong>Status:</strong> {{ animal?.active }}<br> -->
+          <strong>Especie:</strong> {{ animal?.species }}<br>
+          <strong>Raça:</strong> {{ animal?.breed }}<br>
+          <strong>Sexo:</strong> {{ animal?.sex }}<br>
+          <strong>Data de nascimento:</strong> {{ animal?.birth_date | date: 'dd/MM/yyyy' }}<br>
+          <strong>Status:</strong> {{ animal?.active }}<br>
         </div>
-        <div class="col-md-1">
-          <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="openUpdateAnimalModal()" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
+        <div class="col-md-2 text-end">
+          <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openUpdateAnimalModal()" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
           <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" (click)="openDeleteAnimalModal(animal)" ngbTooltip="Excluir animal"><i class="fa-solid fa-trash"></i></button>
         </div>
       </div>
@@ -65,15 +57,20 @@
           Historico
         </div>
         <div *ngFor="let interection of animal?.interections" class="list-group-item">
-          <!-- {{ interection | json }} -->
-          <div class="row">
+          <div class="row" *ngIf="interection?.type == 'create'">
             <div class="col-md-6">
               <h3>{{ interection?.message?.title }}</h3>
               <p>{{ interection?.message?.message }}</p>
             </div>
-            <div class="col-md-6">
-              <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="print(interection?.message?.message)" ngbTooltip="Editar animal"><i class="fa-solid fa-print"></i></button>
-              <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="openCreateMessageModal(interection?.message?.id)" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
+          </div>
+          <div class="row" *ngIf="interection?.type == 'message'">
+            <div class="col-md-10">
+              <h3>{{ interection?.message?.title }}</h3>
+              <p>{{ interection?.message?.message }}</p>
+            </div>
+            <div class="col-md-2 text-end">
+              <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="printDiv(interection?.message?.body)" ngbTooltip="Editar animal"><i class="fa-solid fa-print"></i></button>
+              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openCreateMessageModal(interection?.message?.id)" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
               <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" (click)="openDeleteMessageModal(interection?.message)" ngbTooltip="Excluir animal"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
@@ -89,6 +86,9 @@
         </div>
         <div class="list-group-item" type="button" (click)="openCreateMessageModal()">
           Mensagem
+        </div>
+        <div class="list-group-item" type="button" (click)="openCreateScheduleModal()">
+          Agendamento
         </div>
       </div>
     </div>
@@ -115,6 +115,13 @@
         <input type="text" class="form-control" id="breed" formControlName="breed" required>
       </div>
       <div class="mb-3">
+        <label class="form-label" for="sex">Sexo</label>
+        <select class="form-select" aria-label="Default select example" formControlName="sex">
+          <option value="macho">Macho</option>
+          <option value="fame">Femea</option>
+        </select>
+      </div>
+      <div class="mb-3">
         <label class="form-label" for="birth_date">Data de nascimento</label>
         <input type="date" class="form-control" id="birth_date" formControlName="birth_date" required>
       </div>
@@ -136,7 +143,7 @@
           </div>
         </div>
         <div class="col-2">
-          <button type="button" class="btn btn-primary" ngbTooltip="Adicionar dono" (click)="addOwner()">
+          <button type="button" class="btn btn-success" ngbTooltip="Adicionar dono" (click)="addOwner()">
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -152,7 +159,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!animalForm.valid">Salvar</button>
+      <button type="submit" class="btn btn-success" (click)="modal.close('Save click')" [disabled]="!animalForm.valid">Salvar</button>
     </div>
   </form>
 </ng-template>
@@ -167,7 +174,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
-    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Sim</button>
+    <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Sim</button>
   </div>
 </ng-template>
 
@@ -179,17 +186,30 @@
   <form [formGroup]="messageForm" (ngSubmit)="onSubmitToCreateMessage(messageForm.value.id ?? null)">
     <div class="modal-body">
       <div class="mb-3">
-        <label class="form-label" for="title">title</label>
+        <label class="form-label" for="title">Titulo</label>
         <input type="text" class="form-control" id="title" formControlName="title" required>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="message">message</label>
+        <label class="form-label" for="message">Mensagem</label>
         <input type="text" class="form-control" id="message" formControlName="message">
       </div>
+      <div class="mb-3">
+        <label class="form-label" for="owner_id">Donos</label>
+        <select class="form-select" aria-label="Default select example" formControlName="owner_id">
+          <option *ngFor="let owner of owners" value="{{ owner.id }}">{{ owner.name }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="user_id">Veterinário</label>
+        <select class="form-select" aria-label="Default select example" formControlName="user_id">
+          <option *ngFor="let user of users" value="{{ user.id }}">{{ user.name }}</option>
+        </select>
+      </div>
+      <angular-editor formControlName="body" [config]="editorConfig"></angular-editor>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!messageForm.valid">Salvar</button>
+      <button type="submit" class="btn btn-success" (click)="modal.close('Save click')" [disabled]="!messageForm.valid">Salvar</button>
     </div>
   </form>
 </ng-template>
@@ -204,6 +224,62 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
-    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Sim</button>
+    <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Sim</button>
+  </div>
+</ng-template>
+
+<ng-template #contentCreateSchedule let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Criar agendamento</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="scheduleForm" (ngSubmit)="onSubmitToCreateSchedule(scheduleForm.value.id ?? null)">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="form-label" for="title">Titulo</label>
+        <input type="text" class="form-control" id="title" formControlName="title" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="owner_id">Donos</label>
+        <select class="form-select" aria-label="Default select example" formControlName="owner_id">
+          <option *ngFor="let owner of owners" value="{{ owner.id }}">{{ owner.name }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="user_id">Veterinário</label>
+        <select class="form-select" aria-label="Default select example" formControlName="user_id">
+          <option *ngFor="let user of users" value="{{ user.id }}">{{ user.name }}</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="schedule_at">Data de agendamento</label>
+        <input type="date" class="form-control" id="schedule_at" formControlName="schedule_at" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="a">Data de agendamento</label>
+        <ngb-timepicker id="a" formControlName="a" required></ngb-timepicker>
+      </div>
+
+      <angular-editor formControlName="body" [config]="editorConfig"></angular-editor>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
+      <button type="submit" class="btn btn-success" (click)="modal.close('Save click')" [disabled]="!scheduleForm.valid">Salvar</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #contentDeleteSchedule let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Exclusão de agendamento</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <p>Deseja mesmo excluir esse agendamento?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
+    <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Sim</button>
   </div>
 </ng-template>

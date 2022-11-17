@@ -39,15 +39,18 @@
 // $light:         $gray-100;
 // $dark:          $gray-900;
 
-$primary: #25ae67;
-$secondary: #60439a;
+// $primary: #25ae67;
+// $secondary: #60439a;
 $dark: #666;
-$elephant: #2f3940;// nav
-$tertiary: #58748b;// botões de filtro
-$gray: #f0f3f4;// background
+// $elephant: #2f3940;// nav
+// $tertiary: #58748b;// botões de filtro
+// $gray: #f0f3f4;// background
 
 $theme-colors: (
   "primary":    $primary,
+  // "primary":    $indigo-400,
+  // "primary":    $purple-500,
+  // "primary":    $teal-600,
   "secondary":  $secondary,
   "success":    $success,
   "info":       $info,
@@ -55,9 +58,9 @@ $theme-colors: (
   "danger":     $danger,
   "light":      $light,
   "dark":       $dark,
-  "gray":       $gray,
-  "tertiary":   $tertiary,
-  "elephant":   $elephant
+  // "gray":       $gray,
+  // "tertiary":   $tertiary,
+  // "elephant":   $elephant
 );
 
 /* finally, import Bootstrap */
