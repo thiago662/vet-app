@@ -17,7 +17,7 @@ export class InterectionService {
   getInterections(params: any = null) {
     var authorization: any = this.signService.getToken();
 
-    return this.http.get(this.environment.baseUrl + 'api/interections', {
+    return this.http.get(this.environment.baseUrl + 'api/schedules', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authorization.access_token,
@@ -52,6 +52,29 @@ export class InterectionService {
     var authorization: any = this.signService.getToken();
 
     return this.http.delete(this.environment.baseUrl + 'api/interections/' + id, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authorization.access_token,
+      }),
+    }).toPromise();
+  }
+
+  showUsersOptions(params: any = null) {
+    var authorization: any = this.signService.getToken();
+
+    return this.http.get(this.environment.baseUrl + 'api/users/option', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authorization.access_token,
+      }),
+      params: params,
+    }).toPromise();
+  }
+
+  showAnimalsOptions() {
+    var authorization: any = this.signService.getToken();
+
+    return this.http.get(this.environment.baseUrl + 'api/animals/option', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authorization.access_token,

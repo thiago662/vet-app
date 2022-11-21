@@ -22,6 +22,12 @@ export class HeaderComponent implements OnInit {
       .then((data: any) => {
         this.user = data;
       })
+      .catch((error: any) => {
+        console.log(error);
+        this.logout();
+      })
+      .finally(() => {
+      });
   }
 
   logout(): void {

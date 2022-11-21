@@ -16,6 +16,7 @@ export class AnimalViewComponent implements OnInit {
   @ViewChild("contentCreateMessage") contentCreateMessage: any;
   @ViewChild("contentDeleteMessage") contentDeleteMessage: any;
   @ViewChild("contentCreateSchedule") contentCreateSchedule: any;
+  @ViewChild("contentFinishSchedule") contentFinishSchedule: any;
   @ViewChild("contentDeleteSchedule") contentDeleteSchedule: any;
 
 
@@ -97,10 +98,10 @@ export class AnimalViewComponent implements OnInit {
   });
   scheduleForm = new FormGroup({
     id: new FormControl(''),
-    type: new FormControl('message',[Validators.required]),
+    type: new FormControl('schedule'),
     title: new FormControl('',[Validators.required]),
     schedule_at: new FormControl('',[Validators.required]),
-    a: new FormControl(''),
+    time: new FormControl(''),
     body: new FormControl(''),
     finished: new FormControl(''),
     finish_at: new FormControl(''),
@@ -291,17 +292,54 @@ export class AnimalViewComponent implements OnInit {
   }
 
   openCreateScheduleModal(id: any = null) {
+    this.scheduleForm.patchValue({
+      id: null,
+      title: '',
+      schedule_at: '',
+      time: '',
+      body: '',
+      finished: '',
+      finish_at: '',
+      answered: '',
+      response_message: '',
+      response_body: '',
+      interection_id: '',
+      user_id: '',
+      owner_id: '',
+      animal_id: '',
+    });
+
     this.showOwnersOptions({'animal_id': this.animal.id});
     this.showUsersOptions({'role_ids[]': [3]});
 
     if (id != null) {
       this.animalViewService.showSchedule(id)
         .then((data: any) => {
+          const date = new Date(data.schedule_at);
+
+          const year = date.getFullYear();
+          const month = date.getMonth() + 1;
+          const day = date.getDate();
+
+          const fullDate = [year, month, day].join('-');
+
+          const hours = date.getHours();
+          const minutes = date.getMinutes();
+          const seconds = date.getSeconds();
+
+          const fullTime = {hour: hours, minute: minutes, second: seconds};
+
           this.scheduleForm.patchValue({
             id: data.id,
             title: data.title,
-            message: data.message,
             body: data.body,
+            schedule_at: fullDate,
+            time: fullTime,
+            finished: data.finished,
+            finish_at: data.finish_at,
+            answered: data.answered,
+            response_message: data.response_message,
+            response_body: data.response_body,
             interection_id: data.interection_id,
             user_id: data.user_id,
             owner_id: data.owner_id,
@@ -317,8 +355,14 @@ export class AnimalViewComponent implements OnInit {
       this.scheduleForm.patchValue({
         id: null,
         title: '',
-        message: '',
+        schedule_at: '',
+        time: '',
         body: '',
+        finished: '',
+        finish_at: '',
+        answered: '',
+        response_message: '',
+        response_body: '',
         interection_id: '',
         user_id: '',
         owner_id: '',
@@ -332,12 +376,79 @@ export class AnimalViewComponent implements OnInit {
   openDeleteScheduleModal(schedule: any) {
     this.modalService.open(this.contentDeleteSchedule, {ariaLabelledBy: 'modal-basic-title'})
       .result.then(data => {
-        this.deleteMessage(schedule.id);
+        this.deleteSchedule(schedule.id);
       })
       .catch((error: any) => {
         console.log(error);
       })
       .finally(() => {
+      });
+  }
+
+  openFinishScheduleModal(id: any) {
+    this.animalViewService.showSchedule(id)
+      .then((data: any) => {
+        const date = new Date(data.schedule_at);
+
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+
+        const fullDate = [year, month, day].join('-');
+
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const seconds = date.getSeconds();
+
+        const fullTime = {hour: hours, minute: minutes, second: seconds};
+
+        this.scheduleForm.patchValue({
+          id: data.id,
+          title: data.title,
+          body: data.body,
+          schedule_at: fullDate,
+          time: fullTime,
+          finished: data.finished,
+          finish_at: data.finish_at,
+          answered: data.answered,
+          response_message: data.response_message,
+          response_body: data.response_body,
+          interection_id: data.interection_id,
+          user_id: data.user_id,
+          owner_id: data.owner_id,
+          animal_id: data.animal_id,
+        });
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
+      .finally(() => {
+      });
+
+    this.modalService.open(this.contentFinishSchedule, {ariaLabelledBy: 'modal-basic-title', size: 'lg'})
+      .result.then(data => {
+        this.onSubmitToFinishSchedule(this.scheduleForm.value.id);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.scheduleForm.patchValue({
+          id: '',
+          title: '',
+          schedule_at: '',
+          time: '',
+          body: '',
+          finished: '',
+          finish_at: '',
+          answered: '',
+          response_message: '',
+          response_body: '',
+          interection_id: '',
+          user_id: '',
+          owner_id: '',
+          animal_id: '',
+        });
       });
   }
 
@@ -367,12 +478,6 @@ export class AnimalViewComponent implements OnInit {
   onSubmitToCreateMessage(id: any = null): void {
     if (id == null) {
       this.messageForm.patchValue({
-        // id: '',
-        // title: '',
-        // message: '',
-        // interection_id: '',
-        // user_id: '',
-        // owner_id: '',
         animal_id: this.animal.id,
       });
 
@@ -422,9 +527,9 @@ export class AnimalViewComponent implements OnInit {
 
   onSubmitToCreateSchedule(id: any = null): void {
     var schedule_at = this.scheduleForm.value.schedule_at
-      + 'T' + ("00" + this.scheduleForm.value.a.hour).slice(-2)
-      + ':' + ("00" + this.scheduleForm.value.a.minute).slice(-2)
-      + ':' + ("00" + this.scheduleForm.value.a.second).slice(-2);
+      + 'T' + ("00" + this.scheduleForm.value.time.hour).slice(-2)
+      + ':' + ("00" + this.scheduleForm.value.time.minute).slice(-2)
+      + ':' + ("00" + this.scheduleForm.value.time.second).slice(-2);
 
     this.scheduleForm.patchValue({
       schedule_at: schedule_at,
@@ -432,12 +537,6 @@ export class AnimalViewComponent implements OnInit {
 
     if (id == null) {
       this.scheduleForm.patchValue({
-        // id: '',
-        // title: '',
-        // message: '',
-        // interection_id: '',
-        // user_id: '',
-        // owner_id: '',
         animal_id: this.animal.id,
       });
 
@@ -451,8 +550,14 @@ export class AnimalViewComponent implements OnInit {
           this.scheduleForm.patchValue({
             id: '',
             title: '',
-            message: '',
+            schedule_at: '',
+            time: '',
             body: '',
+            finished: '',
+            finish_at: '',
+            answered: '',
+            response_message: '',
+            response_body: '',
             interection_id: '',
             user_id: '',
             owner_id: '',
@@ -472,8 +577,14 @@ export class AnimalViewComponent implements OnInit {
           this.scheduleForm.patchValue({
             id: '',
             title: '',
-            message: '',
+            schedule_at: '',
+            time: '',
             body: '',
+            finished: '',
+            finish_at: '',
+            answered: '',
+            response_message: '',
+            response_body: '',
             interection_id: '',
             user_id: '',
             owner_id: '',
@@ -483,6 +594,39 @@ export class AnimalViewComponent implements OnInit {
           this.reload();
         });
     }
+  }
+
+  onSubmitToFinishSchedule(id: any): void {
+    this.scheduleForm.patchValue({
+      finished: true,
+    });
+
+    this.animalViewService.finishSchedule(this.scheduleForm.value?.id, this.scheduleForm.value)
+      .then((data: any) => {
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.scheduleForm.patchValue({
+          id: '',
+          title: '',
+          schedule_at: '',
+          time: '',
+          body: '',
+          finished: '',
+          finish_at: '',
+          answered: '',
+          response_message: '',
+          response_body: '',
+          interection_id: '',
+          user_id: '',
+          owner_id: '',
+          animal_id: '',
+        });
+
+        this.reload();
+      });
   }
 
   print(text: any) {

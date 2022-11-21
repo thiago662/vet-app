@@ -13,11 +13,6 @@
       <i class="fas fa-filter"></i>
     </button>
   </div>
-  <div>
-    <button type="button" class="btn btn-success" (click)="openCreateInterectionModal()" ngbTooltip="Adicionar usuario">
-      <i class="fas fa-plus"></i>
-    </button>
-  </div>
 </div>
 
 <div class="m-3">
@@ -30,18 +25,37 @@
         <div class="card-body">
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label" for="name">Nome</label>
-              <input type="text" class="form-control" id="name" formControlName="name">
+              <label class="form-label" for="title">Titulo</label>
+              <input type="text" class="form-control" id="title" formControlName="title">
             </div>
             <div class="col-md-6">
-              <label class="form-label" for="email">Email</label>
-              <input type="email" class="form-control" id="email" formControlName="email">
+              <label class="form-label" for="animal_id">Animal</label>
+              <select class="form-select" id="animal_id" formControlName="animal_id">
+                <option *ngFor="let animal of animals" value="{{ animal?.id }}">{{ animal?.name }}</option>
+              </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label" for="active">Status</label>
-              <select class="form-select" id="active" formControlName="active">
-                <option value="true">Ativo</option>
-                <option value="false">Inativo</option>
+              <label class="form-label" for="user_id">Veterinário</label>
+              <select class="form-select" id="user_id" formControlName="user_id">
+                <option *ngFor="let user of users" value="{{ user?.id }}">{{ user?.name }}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="schedule_at">Data agendada</label>
+              <input type="date" class="form-control" id="schedule_at" formControlName="schedule_at">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="finished">Finalizada</label>
+              <select class="form-select" id="finished" formControlName="finished">
+                <option value="true">Finalizado</option>
+                <option value="false">Aberto</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="answered">Realizada</label>
+              <select class="form-select" id="answered" formControlName="answered">
+                <option value="true">Realizado</option>
+                <option value="false">Não Realizado</option>
               </select>
             </div>
           </div>
@@ -54,28 +68,32 @@
     </form>
   </div>
 </div>
-
 <div class="card m-3">
   <div class="card-body table-responsive p-0">
     <table class="table table-hover m-0">
       <thead>
         <tr>
           <th scope="col">Id</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Email</th>
-          <th scope="col">Status</th>
+          <th scope="col">Animal</th>
+          <th scope="col">Titulo</th>
+          <th scope="col">Veterinário</th>
+          <th scope="col">Data agendada</th>
+          <th scope="col">Finalizada</th>
+          <th scope="col">Realizada</th>
           <th scope="col">Ação</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let interection of interections?.data">
           <td>{{ interection?.id }}</td>
-          <td>{{ interection?.name }}</td>
-          <td>{{ interection?.email }}</td>
-          <td><span [ngClass]="interection?.active ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ interection?.active ? 'Ativo' : 'Desativo' }}</span></td>
+          <td>{{ interection?.animal?.name }}</td>
+          <td>{{ interection?.title }}</td>
+          <td>{{ interection?.user?.name }}</td>
+          <td>{{ interection?.schedule_at | date : 'dd/MM/yyyy hh:mm' }}</td>
+          <td><span [ngClass]="interection?.finished ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ interection?.finished ? 'Finalizado' : 'Aberto' }}</span></td>
+          <td><span [ngClass]="interection?.answered ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ interection?.answered ? 'Realizado' : 'Não Realizado' }}</span></td>
           <td>
-            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/interections/' + interection?.id]" ngbTooltip="Editar usuario"><i class="fa-solid fa-pen"></i></button>
-            <button type="button" class="btn btn-outline-danger btn-sm" (click)="openDeleteInterectionModal(interection)" ngbTooltip="Excluir usuario"><i class="fa-solid fa-trash"></i></button>
+            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/animals/' + interection?.animal_id]" ngbTooltip="Visulizar animal"><i class="fa-solid fa-eye"></i></button>
           </td>
         </tr>
       </tbody>
@@ -91,57 +109,3 @@
     </div>
   </div>
 </div>
-
-<router-outlet></router-outlet>
-
-<ng-template #contentCreate let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">Criar usuario</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <form [formGroup]="interectionForm" (ngSubmit)="onSubmitToCreate()">
-    <div class="modal-body">
-      <div class="mb-3">
-        <label class="form-label" for="name">Nome</label>
-        <input type="text" class="form-control" id="name" formControlName="name" required>
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="email">Email</label>
-        <input type="email" class="form-control" id="email" formControlName="email" required>
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="password">Senha</label>
-        <input type="password" class="form-control" id="password" formControlName="password" required>
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="password_confirmation">Confirmar Senha</label>
-        <input type="password" class="form-control" id="password_confirmation" formControlName="password_confirmation" required>
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="active">Status</label>
-        <div class="mb-3 form-check form-switch">
-          <label class="form-label" for="active">{{ interectionForm.controls.active.value ? 'Ativo' : 'Inativo' }}</label>
-          <input type="checkbox" class="form-check-input" id="active" role="switch" formControlName="active">
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
-      <button type="submit" class="btn btn-primary" (click)="modal.close('Save click')" [disabled]="!interectionForm.valid">Salvar</button>
-    </div>
-  </form>
-</ng-template>
-
-<ng-template #contentDelete let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">Exclusão de usuario</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <p>Deseja mesmo excluir esse usuario?</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Não</button>
-    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Sim</button>
-  </div>
-</ng-template>

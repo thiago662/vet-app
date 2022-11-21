@@ -16,6 +16,8 @@ export class InterectionComponent implements OnInit {
   isCollapsed = true;
   perPageOptions = [5,10,15,20,25,30];
   interections: any;
+  users: any;
+  animals: any;
 
   interectionForm = new FormGroup({
     // name: new FormControl('',[Validators.required]),
@@ -39,10 +41,12 @@ export class InterectionComponent implements OnInit {
     page: new FormControl(1),
   });
   interectionFiltersForm = new FormGroup({
-    // name: new FormControl(''),
-    // email: new FormControl(''),
-    // role_id: new FormControl(''),
-    // active: new FormControl(''),
+    title: new FormControl(''),
+    animal_id: new FormControl(''),
+    user_id: new FormControl(''),
+    schedule_at: new FormControl(''),
+    finished: new FormControl(''),
+    answered: new FormControl(''),
   });
 
   constructor(
@@ -53,6 +57,12 @@ export class InterectionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getInterections();
+    this.showUsersOptions({'role_ids[]': [3]});
+    this.showAnimalsOptions();
+    this.interectionOptionsForm.valueChanges.subscribe(value => {
+      this.getInterections();
+    });
   }
 
   getInterections() {
@@ -61,6 +71,30 @@ export class InterectionComponent implements OnInit {
     this.interectionService.getInterections(filter)
       .then((data: any) => {
         this.interections = data;
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
+      .finally(() => {
+      });
+  }
+
+  showUsersOptions(param: any = null) {
+    this.interectionService.showUsersOptions(param)
+      .then((data: any) => {
+        this.users = data;
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
+      .finally(() => {
+      });
+  }
+
+  showAnimalsOptions() {
+    this.interectionService.showAnimalsOptions()
+      .then((data: any) => {
+        this.animals = data;
       })
       .catch((error: any) => {
         console.log(error);
@@ -125,10 +159,12 @@ export class InterectionComponent implements OnInit {
 
   clearFilter() {
     this.interectionFiltersForm.patchValue({
-      name: '',
-      email: '',
-      role_id: '',
-      active: '',
+      title: '',
+      animal_id: '',
+      user_id: '',
+      schedule_at: '',
+      finished: '',
+      answered: '',
     });
     this.onSubmitToFilter();
     this.isCollapsed = true;

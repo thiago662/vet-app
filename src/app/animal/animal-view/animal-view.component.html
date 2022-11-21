@@ -23,7 +23,7 @@
           <strong>Raça:</strong> {{ animal?.breed }}<br>
           <strong>Sexo:</strong> {{ animal?.sex }}<br>
           <strong>Data de nascimento:</strong> {{ animal?.birth_date | date: 'dd/MM/yyyy' }}<br>
-          <strong>Status:</strong> {{ animal?.active }}<br>
+          <strong>Status:</strong> {{ animal?.active ? 'Ativo' : 'Inativo' }}<br>
         </div>
         <div class="col-md-2 text-end">
           <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openUpdateAnimalModal()" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
@@ -59,19 +59,42 @@
         <div *ngFor="let interection of animal?.interections" class="list-group-item">
           <div class="row" *ngIf="interection?.type == 'create'">
             <div class="col-md-6">
-              <h3>{{ interection?.message?.title }}</h3>
+              <h4>{{ interection?.message?.title }}</h4>
               <p>{{ interection?.message?.message }}</p>
+              <p>Criado em {{ interection?.created_at | date : 'dd/MM/yyyy' }} por {{ interection?.created_by?.name }}</p>
             </div>
           </div>
           <div class="row" *ngIf="interection?.type == 'message'">
             <div class="col-md-10">
-              <h3>{{ interection?.message?.title }}</h3>
+              <h4>{{ interection?.message?.title }}</h4>
               <p>{{ interection?.message?.message }}</p>
+              <p>Criado em {{ interection?.created_at | date : 'dd/MM/yyyy' }} por {{ interection?.created_by?.name }}</p>
             </div>
             <div class="col-md-2 text-end">
               <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="printDiv(interection?.message?.body)" ngbTooltip="Editar animal"><i class="fa-solid fa-print"></i></button>
               <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openCreateMessageModal(interection?.message?.id)" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
               <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" (click)="openDeleteMessageModal(interection?.message)" ngbTooltip="Excluir animal"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="row" *ngIf="interection?.type == 'schedule'">
+            <div class="col-md-10">
+              <p>
+                <span class="h4">Agendamento</span>
+                <span class="badge rounded-pill text-bg-success" [ngClass]="interection?.schedule?.finished ? 'text-bg-success' : 'text-bg-danger'">{{ interection?.schedule?.finished ? 'Finalizado' : 'Aberto' }}</span>
+                <span class="badge rounded-pill text-bg-success" [ngClass]="interection?.schedule?.answered ? 'text-bg-success' : 'text-bg-danger'" *ngIf="interection?.schedule?.finished">{{ interection?.schedule?.answered ? 'Realizado' : 'Não Realizado' }}</span>
+              </p>
+              <p>{{ interection?.schedule?.title }}</p>
+              <p>Veterinário: {{ interection?.schedule?.user?.name }}</p>
+              <p>Data agendada: {{ interection?.schedule?.schedule_at | date : 'dd/MM/yyyy hh:mm' }}</p>
+              <p *ngIf="interection?.schedule?.finished">Data realizada: {{ interection?.schedule?.finish_at | date : 'dd/MM/yyyy hh:mm' }}</p>
+              <p>Criado em {{ interection?.created_at | date : 'dd/MM/yyyy' }} por {{ interection?.created_by?.name }}</p>
+            </div>
+            <div class="col-md-2 text-end">
+              <button type="button" class="btn btn-outline-primary btn-sm rounded-circle" (click)="printDiv(interection?.schedule?.response_body)" *ngIf="interection?.schedule?.finished" ngbTooltip="Editar animal"><i class="fa-solid fa-print"></i></button>
+              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openFinishScheduleModal(interection?.schedule?.id)" *ngIf="!interection?.schedule?.finished" ngbTooltip="Editar animal"><i class="fa-solid fa-check"></i></button>
+              <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="printDiv(interection?.schedule?.body)" ngbTooltip="Editar animal"><i class="fa-solid fa-print"></i></button>
+              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openCreateScheduleModal(interection?.schedule?.id)" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
+              <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" (click)="openDeleteScheduleModal(interection?.schedule)" ngbTooltip="Excluir animal"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         </div>
@@ -251,17 +274,56 @@
           <option *ngFor="let user of users" value="{{ user.id }}">{{ user.name }}</option>
         </select>
       </div>
-
       <div class="mb-3">
         <label class="form-label" for="schedule_at">Data de agendamento</label>
         <input type="date" class="form-control" id="schedule_at" formControlName="schedule_at" required>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="a">Data de agendamento</label>
-        <ngb-timepicker id="a" formControlName="a" required></ngb-timepicker>
+        <label class="form-label" for="time">Data de agendamento</label>
+        <ngb-timepicker id="time" formControlName="time" required></ngb-timepicker>
       </div>
-
       <angular-editor formControlName="body" [config]="editorConfig"></angular-editor>
+    </div>
+    <div class="modal-body" *ngIf="scheduleForm.value.finished">
+      <div class="mb-3">
+        <label class="form-label" for="response_message">Mensagem</label>
+        <input type="text" class="form-control" id="response_message" formControlName="response_message" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="answered">Agendamento foi realizado?</label>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="answered" formControlName="answered" checked>
+          <label class="form-check-label" for="answered">{{ scheduleForm.value.answered ? 'Realizado' : 'Não Realizado' }}</label>
+        </div>
+      </div>
+      <angular-editor formControlName="response_body" [config]="editorConfig"></angular-editor>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
+      <button type="submit" class="btn btn-success" (click)="modal.close('Save click')" [disabled]="!scheduleForm.valid">Salvar</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #contentFinishSchedule let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Finaliza agendamento</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="scheduleForm" (ngSubmit)="onSubmitToFinishSchedule(scheduleForm.value.id)">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="form-label" for="response_message">Mensagem</label>
+        <input type="text" class="form-control" id="response_message" formControlName="response_message" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="answered">Agendamento foi realizado?</label>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="answered" formControlName="answered" checked>
+          <label class="form-check-label" for="answered">{{ scheduleForm.value.answered ? 'Realizado' : 'Não Realizado' }}</label>
+        </div>
+      </div>
+      <angular-editor formControlName="response_body" [config]="editorConfig"></angular-editor>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancelar</button>
