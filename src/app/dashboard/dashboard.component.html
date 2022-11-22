@@ -1,1 +1,102 @@
-<p>dashboard works!</p>
+<ul class="nav align-items-center bg-white border-bottom">
+  <li class="nav-item p-3 text-center">
+    Dashboard
+  </li>
+</ul>
+
+<div class="">
+  <div class="row justify-content-around">
+    <div class="col-md-4">
+      <div class="card m-3 m-3 text-bg-primary" type="button" [routerLink]="['/animals']">
+        <div class="card-body">
+          <h5 class="card-title">{{ dashboard?.animals_count }}</h5>
+          <p class="card-text">Animais</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card m-3 text-bg-primary" type="button" [routerLink]="['/owners']">
+        <div class="card-body">
+          <h5 class="card-title">{{ dashboard?.owners_count }}</h5>
+          <p class="card-text">Donos</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card m-3 text-bg-primary" type="button" [routerLink]="['/users']">
+        <div class="card-body">
+          <h5 class="card-title">{{ dashboard?.users_count }}</h5>
+          <p class="card-text">Usuarios</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card m-3 text-bg-warning" type="button" [routerLink]="['/interections']">
+        <div class="card-body">
+          <h5 class="card-title">{{ dashboard?.open_schedules_count }}</h5>
+          <p class="card-text">Agendamentos em aberto</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card m-3 text-bg-danger" type="button" [routerLink]="['/interections']">
+        <div class="card-body">
+          <h5 class="card-title">{{ dashboard?.closed_schedules_not_done_count }}</h5>
+          <p class="card-text">Agendamentos finalizado não realizado</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card m-3 text-bg-success" type="button" [routerLink]="['/interections']">
+        <div class="card-body">
+          <h5 class="card-title">{{ dashboard?.closed_schedules_done_count }}</h5>
+          <p class="card-text">Agendamentos finalizado realizado</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4 class="m-3">Agendamentos do dia</h4>
+
+<div class="card m-3">
+  <div class="card-body table-responsive p-0">
+    <table class="table table-hover m-0">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Animal</th>
+          <th scope="col">Titulo</th>
+          <th scope="col">Veterinário</th>
+          <th scope="col">Data agendada</th>
+          <th scope="col">Finalizada</th>
+          <th scope="col">Realizada</th>
+          <th scope="col">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let interection of interections?.data">
+          <td>{{ interection?.id }}</td>
+          <td>{{ interection?.animal?.name }}</td>
+          <td>{{ interection?.title }}</td>
+          <td>{{ interection?.user?.name }}</td>
+          <td>{{ interection?.schedule_at | date : 'dd/MM/yyyy hh:mm' }}</td>
+          <td><span [ngClass]="interection?.finished ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ interection?.finished ? 'Finalizado' : 'Aberto' }}</span></td>
+          <td><span [ngClass]="interection?.answered ? 'badge text-bg-success' : 'badge text-bg-danger'">{{ interection?.answered ? 'Realizado' : 'Não Realizado' }}</span></td>
+          <td>
+            <button type="button" class="btn btn-outline-success btn-sm" [routerLink]="['/animals/' + interection?.animal_id]" ngbTooltip="Visulizar animal"><i class="fa-solid fa-eye"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div [formGroup]="interectionOptionsForm" class="card-footer d-flex justify-content-between align-middle">
+    <span class="align-middle">Pagina {{ interections?.current_page }} de {{ interections?.last_page }}</span>
+    <ngb-pagination [collectionSize]="interections?.last_page * 10" [page]="interectionOptionsForm.controls.page.value" (pageChange)="interectionOptionsForm.controls.page.setValue($event)" [maxSize]="5" [boundaryLinks]="true" size="sm"></ngb-pagination>
+    <div class="col-auto">
+      <select class="form-select form-select-sm" aria-label="Default select example" id="per_page" formControlName="per_page">
+        <option *ngFor="let option of perPageOptions" [value]="option">{{ option }}</option>
+      </select>
+    </div>
+  </div>
+</div>

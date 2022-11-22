@@ -19,7 +19,6 @@ export class AnimalViewComponent implements OnInit {
   @ViewChild("contentFinishSchedule") contentFinishSchedule: any;
   @ViewChild("contentDeleteSchedule") contentDeleteSchedule: any;
 
-
   animal: any;
   owners: any;
   users: any;
