@@ -203,7 +203,7 @@
         <input type="date" class="form-control" id="birth_date" formControlName="birth_date">
       </div>
       <div class="row mb-3" formArrayName="animals">
-        <label class="form-label" for="birth_date">Data de nascimento</label>
+        <label class="form-label">Animais</label>
         <div class="col-10">
           <div class="row" *ngFor="let animalForm of animalForms.controls; let i = index" [formGroupName]="i">
             <div class="col-10">
