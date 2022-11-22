@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerViewService } from './owner-view.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { ToastService } from 'src/app/toast/toast.service';
 
 @Component({
   selector: 'app-owner-view',
@@ -126,6 +127,7 @@ export class OwnerViewComponent implements OnInit {
     private route: ActivatedRoute,
     private ownerViewService: OwnerViewService,
     private modalService: NgbModal,
+    public toastService: ToastService,
   ) { }
 
   ngOnInit(): void {
@@ -171,9 +173,12 @@ export class OwnerViewComponent implements OnInit {
   deleteOwner(id: any) {
     this.ownerViewService.deleteOwner(id)
       .then((data: any) => {
+        this.toastService.show('Dono excluido com sucesso', { classname: 'bg-success text-light', delay: 10000 });
+
         this.router.navigate(['/owners']);
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -207,9 +212,11 @@ export class OwnerViewComponent implements OnInit {
   deleteMessage(id: any) {
     this.ownerViewService.deleteMessage(id)
       .then((data: any) => {
+        this.toastService.show('Mensagem excluido com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         this.reload();
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -219,9 +226,11 @@ export class OwnerViewComponent implements OnInit {
   deleteSchedule(id: any) {
     this.ownerViewService.deleteSchedule(id)
       .then((data: any) => {
+        this.toastService.show('Agendamento excluido com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         this.reload();
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -470,8 +479,10 @@ export class OwnerViewComponent implements OnInit {
   onSubmitToUpdateOwner(): void {
     this.ownerViewService.updateOwner(this.ownerForm.value?.id, this.ownerForm.value)
       .then((data: any) => {
+        this.toastService.show('Dono atualizado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -498,8 +509,10 @@ export class OwnerViewComponent implements OnInit {
 
       this.ownerViewService.createMessage(this.messageForm.value)
         .then((data: any) => {
+          this.toastService.show('Mensagem criada com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         })
         .catch((error: any) => {
+          this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
           console.log(error);
         })
         .finally(() => {
@@ -519,8 +532,10 @@ export class OwnerViewComponent implements OnInit {
     } else {
       this.ownerViewService.updateMessage(this.messageForm.value?.id, this.messageForm.value)
         .then((data: any) => {
+          this.toastService.show('Mensagem atualizado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         })
         .catch((error: any) => {
+          this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
           console.log(error);
         })
         .finally(() => {
@@ -557,8 +572,10 @@ export class OwnerViewComponent implements OnInit {
 
       this.ownerViewService.createSchedule(this.scheduleForm.value)
         .then((data: any) => {
+          this.toastService.show('Agendamento criado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         })
         .catch((error: any) => {
+          this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
           console.log(error);
         })
         .finally(() => {
@@ -584,8 +601,10 @@ export class OwnerViewComponent implements OnInit {
     } else {
       this.ownerViewService.updateSchedule(this.scheduleForm.value?.id, this.scheduleForm.value)
         .then((data: any) => {
+          this.toastService.show('Agendamento atualizado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         })
         .catch((error: any) => {
+          this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
           console.log(error);
         })
         .finally(() => {
@@ -618,8 +637,10 @@ export class OwnerViewComponent implements OnInit {
 
     this.ownerViewService.finishSchedule(this.scheduleForm.value?.id, this.scheduleForm.value)
       .then((data: any) => {
+        this.toastService.show('Agendamento finalizado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -681,4 +702,8 @@ export class OwnerViewComponent implements OnInit {
   reload() {
     this.ngOnInit();
   }
+
+	ngOnDestroy(): void {
+		this.toastService.clear();
+	}
 }

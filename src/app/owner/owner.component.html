@@ -78,10 +78,10 @@
               <label class="form-label" for="address_reference">Referencia</label>
               <input type="text" class="form-control" id="address_reference" formControlName="address_reference">
             </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <label class="form-label" for="birth_date">Data de nascimento</label>
               <input type="date" class="form-control" id="birth_date" formControlName="birth_date">
-            </div>
+            </div> -->
             <div class="col-md-6">
               <label class="form-label" for="active">Status</label>
               <select class="form-select" id="active" formControlName="active">
@@ -212,14 +212,14 @@
               </select>
             </div>
             <div class="col-2">
-              <button type="button" class="btn btn-danger" ngbTooltip="Excluir dono" (click)="removeAnimal(i)">
+              <button type="button" class="btn btn-danger" ngbTooltip="Excluir animal" (click)="removeAnimal(i)">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </div>
           </div>
         </div>
         <div class="col-2">
-          <button type="button" class="btn btn-success" ngbTooltip="Adicionar dono" (click)="addAnimal()">
+          <button type="button" class="btn btn-success" ngbTooltip="Adicionar animal" (click)="addAnimal()">
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -252,3 +252,5 @@
     <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Sim</button>
   </div>
 </ng-template>
+
+<app-toast aria-live="polite" aria-atomic="true"></app-toast>

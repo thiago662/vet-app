@@ -1,16 +1,17 @@
-import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
+import { Component, Injectable, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnimalViewService } from './animal-view.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { ToastService } from 'src/app/toast/toast.service';
 
 @Component({
   selector: 'app-animal-view',
   templateUrl: './animal-view.component.html',
   styleUrls: ['./animal-view.component.scss']
 })
-export class AnimalViewComponent implements OnInit {
+export class AnimalViewComponent implements OnInit, OnDestroy {
   @ViewChild("contentUpdateAnimal") contentUpdateAnimal: any;
   @ViewChild("contentDeleteAnimal") contentDeleteAnimal: any;
   @ViewChild("contentCreateMessage") contentCreateMessage: any;
@@ -118,6 +119,7 @@ export class AnimalViewComponent implements OnInit {
     private route: ActivatedRoute,
     private animalViewService: AnimalViewService,
     private modalService: NgbModal,
+    public toastService: ToastService,
   ) { }
 
   ngOnInit(): void {
@@ -155,9 +157,12 @@ export class AnimalViewComponent implements OnInit {
   deleteAnimal(id: any) {
     this.animalViewService.deleteAnimal(id)
       .then((data: any) => {
+        this.toastService.show('Animal excluido com sucesso', { classname: 'bg-success text-light', delay: 10000 });
+
         this.router.navigate(['/animals']);
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -191,9 +196,11 @@ export class AnimalViewComponent implements OnInit {
   deleteMessage(id: any) {
     this.animalViewService.deleteMessage(id)
       .then((data: any) => {
+        this.toastService.show('Mensagem excluido com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         this.reload();
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -203,9 +210,11 @@ export class AnimalViewComponent implements OnInit {
   deleteSchedule(id: any) {
     this.animalViewService.deleteSchedule(id)
       .then((data: any) => {
+        this.toastService.show('Agendamento excluido com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         this.reload();
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -454,8 +463,10 @@ export class AnimalViewComponent implements OnInit {
   onSubmitToUpdateAnimal(): void {
     this.animalViewService.updateAnimal(this.animalForm.value?.id, this.animalForm.value)
       .then((data: any) => {
+        this.toastService.show('Animal atualizado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -482,8 +493,10 @@ export class AnimalViewComponent implements OnInit {
 
       this.animalViewService.createMessage(this.messageForm.value)
         .then((data: any) => {
+          this.toastService.show('Mensagem criada com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         })
         .catch((error: any) => {
+          this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
           console.log(error);
         })
         .finally(() => {
@@ -503,8 +516,10 @@ export class AnimalViewComponent implements OnInit {
     } else {
       this.animalViewService.updateMessage(this.messageForm.value?.id, this.messageForm.value)
         .then((data: any) => {
+          this.toastService.show('Mensagem atualizado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         })
         .catch((error: any) => {
+          this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
           console.log(error);
         })
         .finally(() => {
@@ -541,8 +556,10 @@ export class AnimalViewComponent implements OnInit {
 
       this.animalViewService.createSchedule(this.scheduleForm.value)
         .then((data: any) => {
+          this.toastService.show('Agendamento criado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         })
         .catch((error: any) => {
+          this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
           console.log(error);
         })
         .finally(() => {
@@ -568,8 +585,10 @@ export class AnimalViewComponent implements OnInit {
     } else {
       this.animalViewService.updateSchedule(this.scheduleForm.value?.id, this.scheduleForm.value)
         .then((data: any) => {
+          this.toastService.show('Agendamento atualizado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         })
         .catch((error: any) => {
+          this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
           console.log(error);
         })
         .finally(() => {
@@ -602,8 +621,10 @@ export class AnimalViewComponent implements OnInit {
 
     this.animalViewService.finishSchedule(this.scheduleForm.value?.id, this.scheduleForm.value)
       .then((data: any) => {
+        this.toastService.show('Agendamento finalizado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -665,4 +686,8 @@ export class AnimalViewComponent implements OnInit {
   reload() {
     this.ngOnInit();
   }
+
+	ngOnDestroy(): void {
+		this.toastService.clear();
+	}
 }

@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../toast/toast.service';
 import { OwnerService } from './owner.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { OwnerService } from './owner.service';
   templateUrl: './owner.component.html',
   styleUrls: ['./owner.component.scss']
 })
-export class OwnerComponent implements OnInit {
+export class OwnerComponent implements OnInit, OnDestroy {
   @ViewChild("contentCreate") contentCreate: any;
   @ViewChild("contentDelete") contentDelete: any;
 
@@ -69,6 +70,7 @@ export class OwnerComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private route: ActivatedRoute,
+    public toastService: ToastService,
   ) { }
 
   ngOnInit(): void {
@@ -95,9 +97,11 @@ export class OwnerComponent implements OnInit {
   deleteOwner(id: any) {
     this.ownerService.deleteOwner(id)
       .then((data: any) => {
+        this.toastService.show('Dono excluido com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         this.reload();
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -119,8 +123,10 @@ export class OwnerComponent implements OnInit {
   onSubmitToCreate(): void {
     this.ownerService.createOwner(this.ownerForm.value)
       .then((data: any) => {
+        this.toastService.show('Dono criado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -203,4 +209,8 @@ export class OwnerComponent implements OnInit {
   reload() {
     this.ngOnInit();
   }
+
+	ngOnDestroy(): void {
+		this.toastService.clear();
+	}
 }

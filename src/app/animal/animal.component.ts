@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../toast/toast.service';
 import { AnimalService } from './animal.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { AnimalService } from './animal.service';
   templateUrl: './animal.component.html',
   styleUrls: ['./animal.component.scss']
 })
-export class AnimalComponent implements OnInit {
+export class AnimalComponent implements OnInit, OnDestroy {
   @ViewChild("contentCreate") contentCreate: any;
   @ViewChild("contentDelete") contentDelete: any;
 
@@ -51,6 +52,7 @@ export class AnimalComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private route: ActivatedRoute,
+    public toastService: ToastService,
   ) { }
 
   ngOnInit(): void {
@@ -78,9 +80,11 @@ export class AnimalComponent implements OnInit {
   deleteAnimal(id: any) {
     this.animalService.deleteAnimal(id)
       .then((data: any) => {
+        this.toastService.show('Animal excluido com sucesso', { classname: 'bg-success text-light', delay: 10000 });
         this.reload();
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -112,8 +116,10 @@ export class AnimalComponent implements OnInit {
   onSubmitToCreate(): void {
     this.animalService.createAnimal(this.animalForm.value)
       .then((data: any) => {
+        this.toastService.show('Animal criado com sucesso', { classname: 'bg-success text-light', delay: 10000 });
       })
       .catch((error: any) => {
+        this.toastService.show('Erro: ' + error.error.message, { classname: 'bg-danger text-light', delay: 10000 });
         console.log(error);
       })
       .finally(() => {
@@ -168,4 +174,8 @@ export class AnimalComponent implements OnInit {
   reload() {
     this.ngOnInit();
   }
+
+	ngOnDestroy(): void {
+		this.toastService.clear();
+	}
 }

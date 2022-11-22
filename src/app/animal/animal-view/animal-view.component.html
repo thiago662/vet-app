@@ -71,9 +71,9 @@
               <p>Criado em {{ interection?.created_at | date : 'dd/MM/yyyy' }} por {{ interection?.created_by?.name }}</p>
             </div>
             <div class="col-md-2 text-end">
-              <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="printDiv(interection?.message?.body)" ngbTooltip="Editar animal"><i class="fa-solid fa-print"></i></button>
-              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openCreateMessageModal(interection?.message?.id)" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
-              <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" (click)="openDeleteMessageModal(interection?.message)" ngbTooltip="Excluir animal"><i class="fa-solid fa-trash"></i></button>
+              <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="printDiv(interection?.message?.body)" ngbTooltip="Salvar documento da mensagem"><i class="fa-solid fa-print"></i></button>
+              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openCreateMessageModal(interection?.message?.id)" ngbTooltip="Editar mensagem"><i class="fa-solid fa-pen"></i></button>
+              <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" (click)="openDeleteMessageModal(interection?.message)" ngbTooltip="Excluir mensagem"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
           <div class="row" *ngIf="interection?.type == 'schedule'">
@@ -90,11 +90,11 @@
               <p>Criado em {{ interection?.created_at | date : 'dd/MM/yyyy' }} por {{ interection?.created_by?.name }}</p>
             </div>
             <div class="col-md-2 text-end">
-              <button type="button" class="btn btn-outline-primary btn-sm rounded-circle" (click)="printDiv(interection?.schedule?.response_body)" *ngIf="interection?.schedule?.finished" ngbTooltip="Editar animal"><i class="fa-solid fa-print"></i></button>
-              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openFinishScheduleModal(interection?.schedule?.id)" *ngIf="!interection?.schedule?.finished" ngbTooltip="Editar animal"><i class="fa-solid fa-check"></i></button>
-              <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="printDiv(interection?.schedule?.body)" ngbTooltip="Editar animal"><i class="fa-solid fa-print"></i></button>
-              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openCreateScheduleModal(interection?.schedule?.id)" ngbTooltip="Editar animal"><i class="fa-solid fa-pen"></i></button>
-              <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" (click)="openDeleteScheduleModal(interection?.schedule)" ngbTooltip="Excluir animal"><i class="fa-solid fa-trash"></i></button>
+              <button type="button" class="btn btn-outline-primary btn-sm rounded-circle" (click)="printDiv(interection?.schedule?.response_body)" *ngIf="interection?.schedule?.finished" ngbTooltip="Salvar documento da finalização do agendamento"><i class="fa-solid fa-print"></i></button>
+              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openFinishScheduleModal(interection?.schedule?.id)" *ngIf="!interection?.schedule?.finished" ngbTooltip="Finalizar agendamento"><i class="fa-solid fa-check"></i></button>
+              <button type="button" class="btn btn-primary btn-sm rounded-circle" (click)="printDiv(interection?.schedule?.body)" ngbTooltip="Salvar documento do agendamento"><i class="fa-solid fa-print"></i></button>
+              <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="openCreateScheduleModal(interection?.schedule?.id)" ngbTooltip="Editar agendamento"><i class="fa-solid fa-pen"></i></button>
+              <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" (click)="openDeleteScheduleModal(interection?.schedule)" ngbTooltip="Excluir agendamento"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         </div>
@@ -345,3 +345,5 @@
     <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Sim</button>
   </div>
 </ng-template>
+
+<app-toast aria-live="polite" aria-atomic="true"></app-toast>
